@@ -32,3 +32,7 @@ testbench.yaml
 /coverage
 /plan-docs
 /.claude
+
+# Environment
+.env
+.env.testing

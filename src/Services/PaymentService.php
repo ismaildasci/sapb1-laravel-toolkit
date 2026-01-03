@@ -9,7 +9,17 @@ use SapB1\Toolkit\Builders\Finance\PaymentBuilder;
 use SapB1\Toolkit\DTOs\Finance\PaymentDto;
 
 /**
- * Service for payment operations.
+ * Service for SAP B1 payment operations.
+ *
+ * Handles incoming and outgoing payments, invoice payments,
+ * and balance inquiries. Supports multiple payment methods
+ * including transfer, cash, and check.
+ *
+ * @example
+ * ```php
+ * $service = app(PaymentService::class);
+ * $payment = $service->payInvoice(123, 1000.00, 'transfer', 'BANK01');
+ * ```
  */
 final class PaymentService extends BaseService
 {

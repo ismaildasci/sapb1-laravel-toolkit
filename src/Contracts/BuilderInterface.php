@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace SapB1\Toolkit\Contracts;
 
+/**
+ * Contract for SAP B1 builder classes.
+ *
+ * Builders provide a fluent interface for constructing complex
+ * data structures to be sent to the SAP B1 Service Layer API.
+ */
 interface BuilderInterface
 {
     /**

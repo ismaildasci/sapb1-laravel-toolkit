@@ -11,6 +11,7 @@ use SapB1\Toolkit\Commands\ReportCommand;
 use SapB1\Toolkit\Commands\SyncCommand;
 use SapB1\Toolkit\Commands\TestConnectionCommand;
 use SapB1\Toolkit\Services\ApprovalService;
+use SapB1\Toolkit\Services\CacheService;
 use SapB1\Toolkit\Services\DocumentFlowService;
 use SapB1\Toolkit\Services\InventoryService;
 use SapB1\Toolkit\Services\PaymentService;
@@ -50,6 +51,7 @@ class ToolkitServiceProvider extends PackageServiceProvider
     private function registerServices(): void
     {
         // Register services as singletons - Laravel can auto-resolve classes without dependencies
+        $this->app->singleton(CacheService::class);
         $this->app->singleton(DocumentFlowService::class);
         $this->app->singleton(PaymentService::class);
         $this->app->singleton(InventoryService::class);

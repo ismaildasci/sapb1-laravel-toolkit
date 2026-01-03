@@ -6,6 +6,12 @@ namespace SapB1\Toolkit\Exceptions;
 
 use Exception;
 
+/**
+ * Base exception for all SAP B1 Toolkit exceptions.
+ *
+ * Provides additional context data for debugging and error handling.
+ * All toolkit-specific exceptions should extend this class.
+ */
 class SapB1Exception extends Exception
 {
     /**

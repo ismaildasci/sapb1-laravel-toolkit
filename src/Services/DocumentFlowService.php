@@ -12,7 +12,17 @@ use SapB1\Toolkit\DTOs\Sales\InvoiceDto;
 use SapB1\Toolkit\DTOs\Sales\OrderDto;
 
 /**
- * Service for managing document flow operations.
+ * Service for managing SAP B1 document flow operations.
+ *
+ * Handles document conversions such as quotation to order,
+ * order to delivery, and order to invoice. Provides methods
+ * for complete sales flows and document relationship tracking.
+ *
+ * @example
+ * ```php
+ * $service = app(DocumentFlowService::class);
+ * $invoice = $service->orderToInvoice(123);
+ * ```
  */
 final class DocumentFlowService extends BaseService
 {
