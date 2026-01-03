@@ -1,0 +1,25 @@
+{
+    "DocEntry": 1,
+    "DocNum": 1001,
+    "CardCode": "C001",
+    "CardName": "Test Customer",
+    "DocDate": "2024-01-15",
+    "DocDueDate": "2024-02-15",
+    "DocCurrency": "TRY",
+    "DocTotal": 1180.00,
+    "VatSum": 180.00,
+    "Comments": "Test order",
+    "DocumentStatus": "bost_Open",
+    "DocumentLines": [
+        {
+            "LineNum": 0,
+            "ItemCode": "ITEM001",
+            "ItemDescription": "Test Item 1",
+            "Quantity": 10,
+            "UnitPrice": 100.00,
+            "WarehouseCode": "01",
+            "TaxCode": "KDV18",
+            "LineTotal": 1000.00
+        }
+    ]
+}

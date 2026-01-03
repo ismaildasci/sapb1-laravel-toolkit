@@ -1,0 +1,32 @@
+{
+    "CardCode": "C001",
+    "CardName": "Test Customer Ltd.",
+    "CardType": "cCustomer",
+    "GroupCode": 100,
+    "FederalTaxID": "1234567890",
+    "Phone1": "+90 212 555 0000",
+    "EmailAddress": "test@example.com",
+    "Currency": "TRY",
+    "CreditLimit": 50000.00,
+    "PayTermsGrpCode": -1,
+    "SalesPersonCode": 1,
+    "Frozen": "tNO",
+    "BPAddresses": [
+        {
+            "AddressName": "Main",
+            "AddressType": "bo_BillTo",
+            "Street": "Test Street 123",
+            "City": "Istanbul",
+            "Country": "TR",
+            "ZipCode": "34000"
+        }
+    ],
+    "ContactEmployees": [
+        {
+            "Name": "John Doe",
+            "Title": "Manager",
+            "Phone1": "+90 532 555 0000",
+            "E_Mail": "john@example.com"
+        }
+    ]
+}

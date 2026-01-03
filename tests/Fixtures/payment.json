@@ -1,0 +1,18 @@
+{
+    "DocEntry": 1,
+    "DocNum": 5001,
+    "CardCode": "C001",
+    "CardName": "Test Customer Ltd.",
+    "DocDate": "2024-01-20",
+    "DocCurrency": "TRY",
+    "CashSum": 1180.00,
+    "TransferSum": 0,
+    "ChecksSum": 0,
+    "PaymentInvoices": [
+        {
+            "DocEntry": 1,
+            "SumApplied": 1180.00,
+            "InvoiceType": "it_Invoice"
+        }
+    ]
+}

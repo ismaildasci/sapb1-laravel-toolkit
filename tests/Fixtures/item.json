@@ -1,0 +1,29 @@
+{
+    "ItemCode": "ITEM001",
+    "ItemName": "Test Product",
+    "ItemType": "itItems",
+    "ItemClass": "itcMaterial",
+    "BarCode": "8690000000001",
+    "ValuationMethod": "bvm_MovingAverage",
+    "DefaultWarehouse": "01",
+    "PurchaseItem": "tYES",
+    "SellItem": "tYES",
+    "ManageBatchNumbers": "tNO",
+    "ManageSerialNumbers": "tNO",
+    "QuantityOnStock": 100,
+    "ItemWarehouseInfoCollection": [
+        {
+            "WarehouseCode": "01",
+            "InStock": 100,
+            "Committed": 10,
+            "Ordered": 5
+        }
+    ],
+    "ItemPrices": [
+        {
+            "PriceList": 1,
+            "Price": 100.00,
+            "Currency": "TRY"
+        }
+    ]
+}
