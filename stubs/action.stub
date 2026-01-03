@@ -1,0 +1,124 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+use SapB1\Toolkit\Actions\Base\DocumentAction;
+use {{ dtoNamespace }}\{{ class }}Dto;
+use {{ builderNamespace }}\{{ class }}Builder;
+
+/**
+ * {{ class }} actions.
+ */
+final class {{ class }}Action extends DocumentAction
+{
+    protected string $entity = '{{ entity }}';
+
+    /**
+     * @param  int|{{ class }}Builder|array<string, mixed>  ...$args
+     */
+    public function execute(mixed ...$args): mixed
+    {
+        if (empty($args)) {
+            return $this;
+        }
+
+        $first = $args[0];
+
+        if (is_int($first)) {
+            return $this->find($first);
+        }
+
+        return $this->create($first);
+    }
+
+    /**
+     * Find by DocEntry.
+     */
+    public function find(int $docEntry): {{ class }}Dto
+    {
+        $data = $this->getDocument($docEntry);
+
+        return {{ class }}Dto::fromResponse($data);
+    }
+
+    /**
+     * Create a new document.
+     *
+     * @param  {{ class }}Builder|array<string, mixed>  $data
+     */
+    public function create({{ class }}Builder|array $data): {{ class }}Dto
+    {
+        $payload = $data instanceof {{ class }}Builder ? $data->build() : $data;
+        $response = $this->createDocument($payload);
+
+        return {{ class }}Dto::fromResponse($response);
+    }
+
+    /**
+     * Update an existing document.
+     *
+     * @param  {{ class }}Builder|array<string, mixed>  $data
+     */
+    public function update(int $docEntry, {{ class }}Builder|array $data): {{ class }}Dto
+    {
+        $payload = $data instanceof {{ class }}Builder ? $data->build() : $data;
+        $response = $this->updateDocument($docEntry, $payload);
+
+        return {{ class }}Dto::fromResponse($response);
+    }
+
+    /**
+     * Cancel a document.
+     */
+    public function cancel(int $docEntry): bool
+    {
+        return $this->cancelDocument($docEntry);
+    }
+
+    /**
+     * Close a document.
+     */
+    public function close(int $docEntry): bool
+    {
+        return $this->closeDocument($docEntry);
+    }
+
+    /**
+     * Get all documents.
+     *
+     * @return array<{{ class }}Dto>
+     */
+    public function all(): array
+    {
+        $response = $this->client()
+            ->service($this->entity)
+            ->queryBuilder()
+            ->get();
+
+        return array_map(
+            fn (array $item) => {{ class }}Dto::fromResponse($item),
+            $response['value'] ?? []
+        );
+    }
+
+    /**
+     * Get documents by CardCode.
+     *
+     * @return array<{{ class }}Dto>
+     */
+    public function getByCardCode(string $cardCode): array
+    {
+        $response = $this->client()
+            ->service($this->entity)
+            ->queryBuilder()
+            ->filter("CardCode eq '{$cardCode}'")
+            ->get();
+
+        return array_map(
+            fn (array $item) => {{ class }}Dto::fromResponse($item),
+            $response['value'] ?? []
+        );
+    }
+}

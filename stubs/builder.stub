@@ -1,0 +1,17 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{ namespace }};
+
+use SapB1\Toolkit\Builders\DocumentBuilder;
+
+/**
+ * Builder for {{ class }}.
+ *
+ * @phpstan-consistent-constructor
+ */
+final class {{ class }}Builder extends DocumentBuilder
+{
+    // Add custom builder methods here
+}

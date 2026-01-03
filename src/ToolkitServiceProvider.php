@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SapB1\Toolkit;
 
 use SapB1\Toolkit\Commands\CacheCommand;
+use SapB1\Toolkit\Commands\GenerateCommand;
 use SapB1\Toolkit\Commands\InstallCommand;
 use SapB1\Toolkit\Commands\ReportCommand;
 use SapB1\Toolkit\Commands\SyncCommand;
@@ -28,6 +29,7 @@ class ToolkitServiceProvider extends PackageServiceProvider
             ->hasMigration('create_toolkit_table')
             ->hasCommands([
                 InstallCommand::class,
+                GenerateCommand::class,
                 TestConnectionCommand::class,
                 SyncCommand::class,
                 CacheCommand::class,
