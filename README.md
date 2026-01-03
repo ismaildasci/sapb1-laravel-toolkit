@@ -9,6 +9,7 @@ A comprehensive Laravel toolkit for SAP Business One Service Layer integration. 
 
 ## Features
 
+- **Models**: Eloquent-like ORM for SAP B1 entities with relationships, scopes, and query builder
 - **Actions**: CRUD operations for all major SAP B1 entities (Orders, Invoices, Business Partners, etc.)
 - **DTOs**: Type-safe Data Transfer Objects for request/response handling
 - **Builders**: Fluent builders for creating complex documents
@@ -44,6 +45,49 @@ php artisan vendor:publish --tag="sapb1-toolkit-config"
 ```
 
 ## Quick Start
+
+### Using Models (Eloquent-like)
+
+```php
+use SapB1\Toolkit\Models\Sales\Order;
+use SapB1\Toolkit\Models\BusinessPartner\Partner;
+
+// Find a model
+$order = Order::find(123);
+$partner = Partner::where('CardCode', 'C001')->first();
+
+// Relationships
+$order->partner;        // Lazy load
+$order->documentLines;  // Embedded lines
+
+// Query builder
+$orders = Order::where('DocTotal', '>', 1000)
+    ->where('DocumentStatus', 'bost_Open')
+    ->orderBy('DocDate', 'desc')
+    ->with('partner')
+    ->limit(10)
+    ->get();
+
+// Scopes
+$openOrders = Order::open()->get();
+$customers = Partner::customers()->active()->get();
+
+// Create
+$order = Order::create([
+    'CardCode' => 'C001',
+    'DocumentLines' => [
+        ['ItemCode' => 'ITEM001', 'Quantity' => 10, 'Price' => 100],
+    ],
+]);
+
+// Update (only changed fields are sent)
+$order->Comments = 'Updated';
+$order->save();
+
+// Domain methods
+$invoice = $order->toInvoice();
+$order->close();
+```
 
 ### Using Actions
 

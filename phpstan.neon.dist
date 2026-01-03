@@ -10,3 +10,10 @@ parameters:
     checkOctaneCompatibility: true
     checkModelProperties: true
     treatPhpDocTypesAsCertain: false
+    reportUnmatchedIgnoredErrors: false
+
+    # Model classes use dynamic properties via __get/__set
+    # These are expected to be accessed dynamically and should not be flagged
+    ignoreErrors:
+        # Ignore undefined property access in Model classes (dynamic attributes)
+        - '#Access to an undefined property SapB1\\Toolkit\\Models\\(Sales|Purchase|Inventory|Finance|BusinessPartner|Lines|Production)\\[A-Za-z]+::\$[A-Za-z]+#'

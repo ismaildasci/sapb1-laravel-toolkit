@@ -2,6 +2,117 @@
 
 All notable changes to `laravel-sapb1-toolkit` will be documented in this file.
 
+## v2.0.0 - 2026-01-03
+
+### Added
+
+#### Entity Layer - Eloquent-like ORM for SAP B1
+
+A comprehensive ORM-like model layer that brings Eloquent-style syntax to SAP B1 entities.
+
+##### Core Infrastructure (25 files)
+- `SapB1Model` - Base abstract model class with CRUD operations
+- `QueryBuilder` - OData query builder with Eloquent-like syntax
+- `ModelCollection` - Collection class with filter, map, pluck, sum, avg, etc.
+- `Paginator` - Pagination support with OData $top/$skip
+- `ModelNotFoundException` - Exception for missing models
+
+##### Traits (Concerns)
+- `HasAttributes` - Attribute management, fill, __get/__set
+- `HasCasting` - Attribute casting (integer, float, date, datetime, decimal, enum, etc.)
+- `HasDirtyTracking` - Track changes for partial updates
+- `HasEvents` - Model lifecycle events (creating, created, updating, updated, etc.)
+- `HasQueryBuilder` - Static query methods (where, orderBy, limit, etc.)
+- `HasRelationships` - Relationship definitions and loading
+
+##### Relations
+- `Relation` - Base relation class
+- `HasMany` - One-to-many relationships
+- `HasOne` - One-to-one relationships
+- `BelongsTo` - Inverse relationships (N:1)
+
+##### Casts (9 types)
+- `AsBoolean`, `AsInteger`, `AsFloat`, `AsDecimal`
+- `AsDate`, `AsDateTime`
+- `AsArray`, `AsEnum`
+
+##### Sales Models (12)
+- `Order`, `Quotation`, `Invoice`, `Delivery`, `SalesReturn`, `CreditNote`
+- `DownPayment`, `Draft`, `BlanketAgreement`
+- `CorrectionInvoice`, `CorrectionInvoiceReversal`, `SalesTaxInvoice`
+
+##### Purchase Models (11)
+- `PurchaseOrder`, `PurchaseQuotation`, `GoodsReceipt`, `PurchaseInvoice`
+- `PurchaseReturn`, `PurchaseCreditNote`, `PurchaseDownPayment`, `PurchaseRequest`
+- `PurchaseTaxInvoice`, `CorrectionPurchaseInvoice`, `CorrectionPurchaseInvoiceReversal`
+
+##### Essential Models
+- `Partner` - Business Partner model with orders/invoices relationships
+- `Item` - Item model with warehouse relationship
+- `Warehouse` - Warehouse model
+
+##### Line Models
+- `DocumentLine` - Generic document line with item/warehouse relations
+- `JournalEntryLine` - Journal entry line
+- `PaymentInvoice` - Payment invoice line
+- `BlanketAgreementItemLine` - Blanket agreement item line
+
+### Usage Examples
+
+```php
+use SapB1\Toolkit\Models\Sales\Order;
+
+// Find
+$order = Order::find(123);
+
+// Relationships (lazy loading)
+$order->partner;       // BelongsTo Partner
+$order->documentLines; // HasMany DocumentLine
+
+// Query builder (Eloquent-like)
+$orders = Order::where('DocTotal', '>', 1000)
+    ->where('DocumentStatus', 'bost_Open')
+    ->orderBy('DocDate', 'desc')
+    ->with('partner')
+    ->limit(10)
+    ->get();
+
+// Hybrid OData filter support
+$orders = Order::filter("DocTotal gt 1000 and DocDate ge '2024-01-01'")
+    ->orderBy('DocDate', 'desc')
+    ->get();
+
+// Scopes
+$openOrders = Order::open()->get();
+$customerOrders = Order::byCustomer('C001')->get();
+
+// CRUD operations
+$order = Order::create([
+    'CardCode' => 'C001',
+    'DocumentLines' => [...]
+]);
+
+$order->Comments = 'Updated';
+$order->save();  // Only sends changed fields (dirty tracking)
+
+// Domain methods
+$delivery = $order->toDelivery();
+$invoice = $order->toInvoice();
+$order->close();
+$order->cancel();
+```
+
+### Changed
+- Total PHP files: 570+
+- Total Models: 53 (Core: 25, Sales: 12, Purchase: 11, Lines: 4, Essential: 3)
+- PHPStan Level 8 compliance maintained
+
+### Tests
+- All existing 1135+ tests passing
+- PHPStan errors: 0
+
+---
+
 ## v1.2.0 - 2026-01-03
 
 ### Added
