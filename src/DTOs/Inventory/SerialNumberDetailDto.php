@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SapB1\Toolkit\DTOs\Inventory;
 
 use SapB1\Toolkit\DTOs\Base\BaseDto;
-use SapB1\Toolkit\Enums\BoYesNo;
 
 /**
  * Serial Number Detail DTO.
