@@ -1,0 +1,30 @@
+<?php
+
+declare(strict_types=1);
+
+namespace SapB1\Toolkit\Exceptions;
+
+use Exception;
+
+class SapB1Exception extends Exception
+{
+    /**
+     * @param  array<string, mixed>  $context
+     */
+    public function __construct(
+        string $message,
+        int $code = 0,
+        public readonly array $context = [],
+        ?\Throwable $previous = null
+    ) {
+        parent::__construct($message, $code, $previous);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getContext(): array
+    {
+        return $this->context;
+    }
+}
