@@ -22,15 +22,17 @@ class GenerateCommand extends Command
     {
         $name = $this->argument('name');
         $module = $this->option('module');
-        $entity = $this->option('entity') ?: Str::plural($name);
         $type = $this->option('type');
-        $force = $this->option('force');
+        $force = (bool) $this->option('force');
 
-        if (! is_string($name) || ! is_string($module) || ! is_string($entity) || ! is_string($type)) {
+        if (! is_string($name) || ! is_string($module) || ! is_string($type)) {
             $this->error('Invalid arguments provided.');
 
             return self::FAILURE;
         }
+
+        $entityOption = $this->option('entity');
+        $entity = is_string($entityOption) && $entityOption !== '' ? $entityOption : Str::plural($name);
 
         $this->info("Generating SAP B1 Toolkit files for: {$name}");
         $this->newLine();
