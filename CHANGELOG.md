@@ -2,7 +2,7 @@
 
 All notable changes to `laravel-toolkit` will be documented in this file.
 
-## v1.0.0 - 2025-01-03
+## v1.0.0-beta.1 - 2025-01-03
 
 ### Added
 
