@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SapB1\Toolkit;
 
 use SapB1\Toolkit\Commands\CacheCommand;
+use SapB1\Toolkit\Commands\InstallCommand;
 use SapB1\Toolkit\Commands\ReportCommand;
 use SapB1\Toolkit\Commands\SyncCommand;
 use SapB1\Toolkit\Commands\TestConnectionCommand;
@@ -24,7 +25,9 @@ class ToolkitServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-toolkit')
             ->hasConfigFile('laravel-toolkit')
+            ->hasMigration('create_toolkit_table')
             ->hasCommands([
+                InstallCommand::class,
                 TestConnectionCommand::class,
                 SyncCommand::class,
                 CacheCommand::class,
@@ -44,28 +47,12 @@ class ToolkitServiceProvider extends PackageServiceProvider
 
     private function registerServices(): void
     {
-        $this->app->singleton(DocumentFlowService::class, function ($app) {
-            return new DocumentFlowService;
-        });
-
-        $this->app->singleton(PaymentService::class, function ($app) {
-            return new PaymentService;
-        });
-
-        $this->app->singleton(InventoryService::class, function ($app) {
-            return new InventoryService;
-        });
-
-        $this->app->singleton(ReportingService::class, function ($app) {
-            return new ReportingService;
-        });
-
-        $this->app->singleton(ApprovalService::class, function ($app) {
-            return new ApprovalService;
-        });
-
-        $this->app->singleton(SyncService::class, function ($app) {
-            return new SyncService;
-        });
+        // Register services as singletons - Laravel can auto-resolve classes without dependencies
+        $this->app->singleton(DocumentFlowService::class);
+        $this->app->singleton(PaymentService::class);
+        $this->app->singleton(InventoryService::class);
+        $this->app->singleton(ReportingService::class);
+        $this->app->singleton(ApprovalService::class);
+        $this->app->singleton(SyncService::class);
     }
 }
