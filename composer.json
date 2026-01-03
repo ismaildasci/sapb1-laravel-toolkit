@@ -19,7 +19,7 @@
         "php": "^8.4",
         "spatie/laravel-package-tools": "^1.16",
         "illuminate/contracts": "^11.0||^12.0",
-        "sapb1/laravel-sdk": "^1.0"
+        "ismaildasci/laravel-sapb1": "^1.0@beta"
     },
     "require-dev": {
         "laravel/pint": "^1.14",
