@@ -13,7 +13,7 @@ A comprehensive Laravel toolkit for SAP Business One Service Layer integration. 
 - **DTOs**: Type-safe Data Transfer Objects for request/response handling
 - **Builders**: Fluent builders for creating complex documents
 - **Services**: High-level orchestration for document flows, payments, inventory, and reporting
-- **Enums**: 15+ enums covering document types, statuses, and SAP B1 constants
+- **Enums**: 18+ enums covering document types, statuses, tax codes, currencies, and SAP B1 constants
 - **Events**: Document lifecycle events (created, updated, closed, cancelled)
 - **Validation Rules**: Laravel validation rules for SAP B1 entities
 - **Attribute Casts**: Eloquent casts for SAP B1 data types
@@ -31,10 +31,16 @@ A comprehensive Laravel toolkit for SAP Business One Service Layer integration. 
 composer require ismaildasci/laravel-toolkit
 ```
 
-Publish the config file:
+Run the install command:
 
 ```bash
-php artisan vendor:publish --tag="toolkit-config"
+php artisan sapb1:install
+```
+
+Or manually publish the config file:
+
+```bash
+php artisan vendor:publish --tag="laravel-toolkit-config"
 ```
 
 ## Quick Start
@@ -70,12 +76,12 @@ $orderAction->close(123);
 ```php
 use SapB1\Toolkit\Builders\Sales\OrderBuilder;
 
-$order = OrderBuilder::make()
+$order = OrderBuilder::create()
     ->cardCode('C001')
-    ->docDate(now())
+    ->docDate('2024-01-15')
     ->comments('New order')
-    ->addLine('ITEM001', 10, 100.00)
-    ->addLine('ITEM002', 5, 50.00)
+    ->addLine(['ItemCode' => 'ITEM001', 'Quantity' => 10, 'Price' => 100.00])
+    ->addLine(['ItemCode' => 'ITEM002', 'Quantity' => 5, 'Price' => 50.00])
     ->build();
 
 $orderAction->create($order);
@@ -121,8 +127,8 @@ $payment = $paymentService->receivePayment('C001', [
 
 | Module | Actions |
 |--------|---------|
-| Sales | `OrderAction`, `QuotationAction`, `DeliveryAction`, `InvoiceAction`, `CreditNoteAction`, `ReturnAction` |
-| Purchase | `PurchaseOrderAction`, `GoodsReceiptAction`, `PurchaseInvoiceAction`, `PurchaseReturnAction` |
+| Sales | `OrderAction`, `QuotationAction`, `DeliveryAction`, `InvoiceAction`, `CreditNoteAction`, `ReturnAction`, `DownPaymentAction` |
+| Purchase | `PurchaseOrderAction`, `GoodsReceiptAction`, `PurchaseInvoiceAction`, `PurchaseReturnAction`, `PurchaseDownPaymentAction` |
 | Inventory | `ItemAction`, `WarehouseAction`, `StockTransferAction` |
 | Finance | `PaymentAction`, `JournalEntryAction` |
 | Business Partner | `BusinessPartnerAction`, `ActivityAction` |
@@ -131,8 +137,8 @@ $payment = $paymentService->receivePayment('C001', [
 
 | Module | Builders |
 |--------|----------|
-| Sales | `OrderBuilder`, `QuotationBuilder`, `DeliveryBuilder`, `InvoiceBuilder`, `CreditNoteBuilder`, `ReturnBuilder` |
-| Purchase | `PurchaseOrderBuilder`, `GoodsReceiptBuilder`, `PurchaseInvoiceBuilder`, `PurchaseReturnBuilder` |
+| Sales | `OrderBuilder`, `QuotationBuilder`, `DeliveryBuilder`, `InvoiceBuilder`, `CreditNoteBuilder`, `ReturnBuilder`, `DownPaymentBuilder` |
+| Purchase | `PurchaseOrderBuilder`, `GoodsReceiptBuilder`, `PurchaseInvoiceBuilder`, `PurchaseReturnBuilder`, `PurchaseDownPaymentBuilder` |
 | Inventory | `ItemBuilder`, `WarehouseBuilder`, `StockTransferBuilder` |
 | Finance | `PaymentBuilder`, `JournalEntryBuilder` |
 | Business Partner | `BusinessPartnerBuilder`, `ActivityBuilder` |
@@ -206,8 +212,15 @@ Event::listen(DocumentCreated::class, function ($event) {
 ### Artisan Commands
 
 ```bash
+# Install the package
+php artisan sapb1:install
+
 # Test SAP B1 connection
 php artisan sapb1:test --connection=default
+
+# Generate new Action/DTO/Builder
+php artisan sapb1:generate ProductionOrder --module=Production
+php artisan sapb1:generate ServiceCall --module=Service --type=dto
 
 # Sync data from SAP B1
 php artisan sapb1:sync Items --full

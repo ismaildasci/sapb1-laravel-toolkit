@@ -2,7 +2,52 @@
 
 All notable changes to `laravel-toolkit` will be documented in this file.
 
-## v1.0.0-beta.1 - 2025-01-03
+## v1.0.0-beta.2 - 2026-01-03
+
+### Added
+
+#### Down Payment Module
+- `DownPaymentDto`, `DownPaymentBuilder`, `DownPaymentAction` for Sales
+- `PurchaseDownPaymentDto`, `PurchaseDownPaymentBuilder`, `PurchaseDownPaymentAction` for Purchase
+- `DownPaymentType` and `DownPaymentStatus` enums
+
+#### Additional Enums
+- `TaxCode` - Turkish tax codes (KDV0, KDV1, KDV8, KDV10, KDV18, KDV20, STOPAJ, EXEMPT)
+- `Currency` - Common currencies with symbols (TRY, USD, EUR, GBP, etc.)
+- `UnitOfMeasure` - Units of measure (PCS, KG, LT, M, M2, HR, etc.)
+
+#### Generate Command
+- `php artisan sapb1:generate {name}` - Scaffolds DTO, Builder, and Action files
+- Options: `--module`, `--entity`, `--type`, `--force`
+- Stub files for customization
+
+#### Install Command
+- `php artisan sapb1:install` - One-command package installation
+- Publishes config and migrations
+- Displays post-install instructions
+
+#### Test Fixtures
+- JSON fixtures for Orders, Invoices, BusinessPartners, Items, Payments, Warehouses, JournalEntries, DownPayments
+- `FixtureLoader` helper class for loading test data
+
+#### Unit Tests
+- Enum tests (DocumentStatus, DocumentType, TaxCode, Currency, UnitOfMeasure, DownPaymentType, CardType)
+- DTO tests (DocumentDto, DocumentLineDto)
+- Builder tests (DocumentBuilder, DownPaymentBuilder)
+- Feature tests (ServiceProvider, InstallCommand, GenerateCommand, FixtureLoader)
+- **142 tests, 418 assertions**
+
+### Fixed
+- ServiceProvider migration registration (`hasMigration()`)
+- Simplified service registration (removed unnecessary callbacks)
+- PHPStan type safety in GenerateCommand
+
+### Changed
+- Removed empty `resources/views/` directory
+
+---
+
+## v1.0.0-beta.1 - 2026-01-03
 
 ### Added
 
