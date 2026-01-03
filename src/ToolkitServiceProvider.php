@@ -13,7 +13,7 @@ class ToolkitServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('laravel-toolkit')
-            ->hasConfigFile();
+            ->hasConfigFile('laravel-toolkit');
     }
 
     public function packageRegistered(): void
