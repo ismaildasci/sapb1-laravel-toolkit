@@ -1,123 +1,41 @@
 {
-    "single": {
-        "ItemCode": "ITEM001",
-        "ItemName": "Test Product A",
-        "ItemType": "itItems",
-        "ItemClass": "itcMaterial",
-        "ForeignName": "Test Product A (EN)",
-        "ItemsGroupCode": 100,
-        "BarCode": "1234567890123",
-        "VatLiable": "tYES",
-        "PurchaseItem": "tYES",
-        "SalesItem": "tYES",
-        "InventoryItem": "tYES",
-        "Valid": "tYES",
-        "ValidFrom": null,
-        "ValidTo": null,
-        "ValidRemarks": null,
-        "Frozen": "tNO",
-        "SalesUnit": "PCS",
-        "PurchaseUnit": "PCS",
-        "InventoryUoM": "PCS",
-        "ArTaxCode": "KDV18",
-        "ApTaxCode": "KDV18",
-        "BaseUnitName": "PCS",
-        "DefaultWarehouse": "WH01",
-        "InventoryWeight": 1.5,
-        "InventoryWeightUnit": 1,
-        "ManageBatchNumbers": "tNO",
-        "ManageSerialNumbers": "tNO",
-        "QuantityOnStock": 150.0,
-        "QuantityOrderedFromVendors": 50.0,
-        "QuantityOrderedByCustomers": 25.0,
-        "AvgStdPrice": 350.00,
-        "ItemPrices": [
-            {
-                "PriceList": 1,
-                "Price": 500.00,
-                "Currency": "TRY",
-                "BasePriceList": -1
-            },
-            {
-                "PriceList": 2,
-                "Price": 450.00,
-                "Currency": "TRY",
-                "BasePriceList": 1
-            }
-        ],
-        "ItemWarehouseInfoCollection": [
-            {
-                "WarehouseCode": "WH01",
-                "InStock": 100.0,
-                "Committed": 15.0,
-                "Ordered": 30.0,
-                "MinimalStock": 10.0,
-                "MaximalStock": 200.0
-            },
-            {
-                "WarehouseCode": "WH02",
-                "InStock": 50.0,
-                "Committed": 10.0,
-                "Ordered": 20.0,
-                "MinimalStock": 5.0,
-                "MaximalStock": 100.0
-            }
-        ]
-    },
-    "list": {
-        "value": [
-            {
-                "ItemCode": "ITEM001",
-                "ItemName": "Test Product A",
-                "ItemType": "itItems",
-                "QuantityOnStock": 150.0,
-                "Valid": "tYES"
-            },
-            {
-                "ItemCode": "ITEM002",
-                "ItemName": "Test Product B",
-                "ItemType": "itItems",
-                "QuantityOnStock": 75.0,
-                "Valid": "tYES"
-            },
-            {
-                "ItemCode": "ITEM003",
-                "ItemName": "Test Product C",
-                "ItemType": "itItems",
-                "QuantityOnStock": 0.0,
-                "Valid": "tYES"
-            },
-            {
-                "ItemCode": "SRV001",
-                "ItemName": "Service Item",
-                "ItemType": "itServices",
-                "QuantityOnStock": 0.0,
-                "Valid": "tYES"
-            }
-        ],
-        "odata.nextLink": "Items?$skip=20"
-    },
-    "created": {
-        "ItemCode": "ITEM004"
-    },
-    "stock_query": {
-        "value": [
-            {
-                "ItemCode": "ITEM001",
-                "WarehouseCode": "WH01",
-                "InStock": 100.0,
-                "Committed": 15.0,
-                "Ordered": 30.0,
-                "Available": 85.0
-            },
-            {
-                "ItemCode": "ITEM001",
-                "WarehouseCode": "WH02",
-                "InStock": 50.0,
-                "Committed": 10.0,
-                "Ordered": 20.0,
-                "Available": 40.0
-            }
-        ]
+  "single": {
+    "ItemCode": "ITEM001",
+    "ItemName": "Test Product A",
+    "ItemType": "itItems",
+    "ItemsGroupCode": 100,
+    "SalesItem": "tYES",
+    "PurchaseItem": "tYES",
+    "InventoryItem": "tYES",
+    "QuantityOnStock": 150.0,
+    "DefaultWarehouse": "WH01",
+    "Valid": "tYES",
+    "Frozen": "tNO",
+    "ItemPrices": [
+      {"PriceList": 1, "Price": 100.00, "Currency": "TRY"}
+    ]
+  },
+  "list": {
+    "value": [
+      {"ItemCode": "ITEM001", "ItemName": "Test Product A", "QuantityOnStock": 150.0},
+      {"ItemCode": "ITEM002", "ItemName": "Test Product B", "QuantityOnStock": 75.0},
+      {"ItemCode": "ITEM003", "ItemName": "Test Service", "QuantityOnStock": 0}
+    ],
+    "odata.nextLink": "Items?$skip=3"
+  },
+  "created": {
+    "ItemCode": "ITEM004",
+    "ItemName": "New Product",
+    "ItemType": "itItems",
+    "Valid": "tYES"
+  },
+  "error": {
+    "error": {
+      "code": "-2028",
+      "message": {
+        "lang": "en-us",
+        "value": "Item 'ITEM001' already exists"
+      }
     }
+  }
 }
