@@ -1,9 +1,9 @@
 # SAP Business One Laravel Toolkit
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/ismaildasci/laravel-toolkit.svg?style=flat-square)](https://packagist.org/packages/ismaildasci/laravel-toolkit)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/ismaildasci/laravel-toolkit/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/ismaildasci/laravel-toolkit/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/ismaildasci/laravel-toolkit/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/ismaildasci/laravel-toolkit/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/ismaildasci/laravel-toolkit.svg?style=flat-square)](https://packagist.org/packages/ismaildasci/laravel-toolkit)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/ismaildasci/laravel-sapb1-toolkit.svg?style=flat-square)](https://packagist.org/packages/ismaildasci/laravel-sapb1-toolkit)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/ismaildasci/laravel-sapb1-toolkit/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/ismaildasci/laravel-sapb1-toolkit/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/ismaildasci/laravel-sapb1-toolkit/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/ismaildasci/laravel-sapb1-toolkit/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/ismaildasci/laravel-sapb1-toolkit.svg?style=flat-square)](https://packagist.org/packages/ismaildasci/laravel-sapb1-toolkit)
 
 A comprehensive Laravel toolkit for SAP Business One Service Layer integration. Provides Actions, DTOs, Builders, Services, and more for seamless SAP B1 operations.
 
@@ -28,7 +28,7 @@ A comprehensive Laravel toolkit for SAP Business One Service Layer integration. 
 ## Installation
 
 ```bash
-composer require ismaildasci/laravel-toolkit
+composer require ismaildasci/laravel-sapb1-toolkit
 ```
 
 Run the install command:
@@ -40,7 +40,7 @@ php artisan sapb1:install
 Or manually publish the config file:
 
 ```bash
-php artisan vendor:publish --tag="laravel-toolkit-config"
+php artisan vendor:publish --tag="sapb1-toolkit-config"
 ```
 
 ## Quick Start
@@ -129,8 +129,8 @@ $payment = $paymentService->receivePayment('C001', [
 |--------|---------|
 | Sales | `OrderAction`, `QuotationAction`, `DeliveryAction`, `InvoiceAction`, `CreditNoteAction`, `ReturnAction`, `DownPaymentAction` |
 | Purchase | `PurchaseOrderAction`, `GoodsReceiptAction`, `PurchaseInvoiceAction`, `PurchaseReturnAction`, `PurchaseDownPaymentAction` |
-| Inventory | `ItemAction`, `WarehouseAction`, `StockTransferAction` |
-| Finance | `PaymentAction`, `JournalEntryAction` |
+| Inventory | `ItemAction`, `WarehouseAction`, `StockTransferAction`, `BinLocationAction`, `BatchNumberDetailAction`, `SerialNumberDetailAction`, `InventoryGenEntryAction`, `InventoryGenExitAction`, `InventoryPostingAction`, `InventoryCountingAction`, `InventoryCycleAction`, `InventoryTransferRequestAction`, `InventoryOpeningBalanceAction`, `PickListAction`, `CycleCountDeterminationAction`, `StockTakingAction` |
+| Finance | `PaymentAction`, `JournalEntryAction`, `BankAction`, `HouseBankAccountAction`, `CurrencyAction`, `VatGroupAction`, `WithholdingTaxCodeAction`, `SalesTaxCodeAction`, `SalesTaxAuthorityAction`, `PaymentTermsTypeAction`, `BankStatementAction`, `BankPageAction`, `DepositAction`, `CreditCardAction`, `CreditCardPaymentAction`, `ChecksforPaymentAction`, `CashFlowLineItemAction`, `CashDiscountAction`, `BudgetAction`, `BudgetScenarioAction`, `BudgetDistributionAction`, `FinancialYearAction`, `InternalReconciliationAction`, `PaymentDraftAction` |
 | Business Partner | `BusinessPartnerAction`, `ActivityAction` |
 
 ### Builders
@@ -139,8 +139,8 @@ $payment = $paymentService->receivePayment('C001', [
 |--------|----------|
 | Sales | `OrderBuilder`, `QuotationBuilder`, `DeliveryBuilder`, `InvoiceBuilder`, `CreditNoteBuilder`, `ReturnBuilder`, `DownPaymentBuilder` |
 | Purchase | `PurchaseOrderBuilder`, `GoodsReceiptBuilder`, `PurchaseInvoiceBuilder`, `PurchaseReturnBuilder`, `PurchaseDownPaymentBuilder` |
-| Inventory | `ItemBuilder`, `WarehouseBuilder`, `StockTransferBuilder` |
-| Finance | `PaymentBuilder`, `JournalEntryBuilder` |
+| Inventory | `ItemBuilder`, `WarehouseBuilder`, `StockTransferBuilder`, `BinLocationBuilder`, `BatchNumberDetailBuilder`, `SerialNumberDetailBuilder`, `InventoryGenEntryBuilder`, `InventoryGenExitBuilder`, `InventoryPostingBuilder`, `InventoryCountingBuilder`, `InventoryCycleBuilder`, `InventoryTransferRequestBuilder`, `InventoryOpeningBalanceBuilder`, `PickListBuilder`, `CycleCountDeterminationBuilder`, `StockTakingBuilder` |
+| Finance | `PaymentBuilder`, `JournalEntryBuilder`, `BankBuilder`, `HouseBankAccountBuilder`, `CurrencyBuilder`, `VatGroupBuilder`, `WithholdingTaxCodeBuilder`, `SalesTaxCodeBuilder`, `SalesTaxAuthorityBuilder`, `PaymentTermsTypeBuilder`, `BankStatementBuilder`, `BankPageBuilder`, `DepositBuilder`, `CreditCardBuilder`, `CreditCardPaymentBuilder`, `ChecksforPaymentBuilder`, `CashFlowLineItemBuilder`, `CashDiscountBuilder`, `BudgetBuilder`, `BudgetScenarioBuilder`, `BudgetDistributionBuilder`, `FinancialYearBuilder`, `InternalReconciliationBuilder`, `PaymentDraftBuilder` |
 | Business Partner | `BusinessPartnerBuilder`, `ActivityBuilder` |
 
 ### Services

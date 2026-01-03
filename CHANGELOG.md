@@ -1,6 +1,72 @@
 # Changelog
 
-All notable changes to `laravel-toolkit` will be documented in this file.
+All notable changes to `laravel-sapb1-toolkit` will be documented in this file.
+
+## v1.1.0 - 2026-01-03
+
+### Added
+
+#### Package Rename
+- Package renamed from `ismaildasci/laravel-toolkit` to `ismaildasci/laravel-sapb1-toolkit`
+
+#### Inventory Module Extension (13 new entities)
+- `BinLocationAction`, `BinLocationDto`, `BinLocationBuilder` - Bin location management
+- `BatchNumberDetailAction`, `BatchNumberDetailDto`, `BatchNumberDetailBuilder` - Batch tracking
+- `SerialNumberDetailAction`, `SerialNumberDetailDto`, `SerialNumberDetailBuilder` - Serial number tracking
+- `InventoryGenEntryAction`, `InventoryGenEntryDto`, `InventoryGenEntryLineDto`, `InventoryGenEntryBuilder` - Goods Receipt
+- `InventoryGenExitAction`, `InventoryGenExitDto`, `InventoryGenExitLineDto`, `InventoryGenExitBuilder` - Goods Issue
+- `InventoryPostingAction`, `InventoryPostingDto`, `InventoryPostingLineDto`, `InventoryPostingBuilder` - Inventory posting
+- `InventoryCountingAction`, `InventoryCountingDto`, `InventoryCountingLineDto`, `InventoryCountingBuilder` - Physical counting
+- `InventoryCycleAction`, `InventoryCycleDto`, `InventoryCycleBuilder` - Cycle count configuration
+- `InventoryTransferRequestAction`, `InventoryTransferRequestDto`, `InventoryTransferRequestLineDto`, `InventoryTransferRequestBuilder` - Transfer requests
+- `InventoryOpeningBalanceAction`, `InventoryOpeningBalanceDto`, `InventoryOpeningBalanceLineDto`, `InventoryOpeningBalanceBuilder` - Opening balances
+- `PickListAction`, `PickListDto`, `PickListLineDto`, `PickListBuilder` - Pick list management
+- `CycleCountDeterminationAction`, `CycleCountDeterminationDto`, `CycleCountDeterminationBuilder` - Cycle count setup
+- `StockTakingAction`, `StockTakingDto`, `StockTakingLineDto`, `StockTakingBuilder` - Stock taking
+
+#### Finance Module Extension (22 new entities)
+- `BankAction`, `BankDto`, `BankBuilder` - Bank master data
+- `HouseBankAccountAction`, `HouseBankAccountDto`, `HouseBankAccountBuilder` - Company bank accounts
+- `CurrencyAction`, `CurrencyDto`, `CurrencyBuilder` - Currency definitions
+- `VatGroupAction`, `VatGroupDto`, `VatGroupBuilder` - VAT groups
+- `WithholdingTaxCodeAction`, `WithholdingTaxCodeDto`, `WithholdingTaxCodeBuilder` - Withholding tax
+- `SalesTaxCodeAction`, `SalesTaxCodeDto`, `SalesTaxCodeBuilder` - Sales tax codes
+- `SalesTaxAuthorityAction`, `SalesTaxAuthorityDto`, `SalesTaxAuthorityBuilder` - Tax authorities
+- `PaymentTermsTypeAction`, `PaymentTermsTypeDto`, `PaymentTermsTypeBuilder` - Payment terms
+- `BankStatementAction`, `BankStatementDto`, `BankStatementRowDto`, `BankStatementBuilder` - Bank statements
+- `BankPageAction`, `BankPageDto`, `BankPageBuilder` - Bank pages
+- `DepositAction`, `DepositDto`, `DepositCheckDto`, `DepositCreditCardDto`, `DepositBuilder` - Deposits
+- `CreditCardAction`, `CreditCardDto`, `CreditCardBuilder` - Credit card definitions
+- `CreditCardPaymentAction`, `CreditCardPaymentDto`, `CreditCardPaymentBuilder` - Credit card payments
+- `ChecksforPaymentAction`, `ChecksforPaymentDto`, `ChecksforPaymentBuilder` - Payment checks
+- `CashFlowLineItemAction`, `CashFlowLineItemDto`, `CashFlowLineItemBuilder` - Cash flow items
+- `CashDiscountAction`, `CashDiscountDto`, `CashDiscountBuilder` - Cash discounts
+- `BudgetAction`, `BudgetDto`, `BudgetLineDto`, `BudgetBuilder` - Budget management
+- `BudgetScenarioAction`, `BudgetScenarioDto`, `BudgetScenarioBuilder` - Budget scenarios
+- `BudgetDistributionAction`, `BudgetDistributionDto`, `BudgetDistributionBuilder` - Budget distributions
+- `FinancialYearAction`, `FinancialYearDto`, `FinancialYearBuilder` - Financial years
+- `InternalReconciliationAction`, `InternalReconciliationDto`, `InternalReconciliationBuilder` - Internal reconciliations
+- `PaymentDraftAction`, `PaymentDraftDto`, `PaymentDraftBuilder` - Payment drafts
+
+### Changed
+- Total entities increased from 19 to 54
+- Total DTOs: 80 (including line DTOs)
+- Total Builders: 57
+- Total Actions: 56
+- PHPStan Level 8 compliance maintained
+
+---
+
+## v1.0.0-stable - 2026-01-03
+
+### Added
+- Production-ready stable release
+- 147 PHP files
+- 178 tests, PHPStan Level 8
+- CacheService for master data caching
+- Integration test infrastructure
+
+---
 
 ## v1.0.0-beta.2 - 2026-01-03
 

@@ -1,5 +1,5 @@
 {
-    "name": "ismaildasci/laravel-toolkit",
+    "name": "ismaildasci/laravel-sapb1-toolkit",
     "description": "Actions, DTOs and Builders for SAP Business One Service Layer",
     "keywords": [
         "sap",
@@ -10,9 +10,10 @@
         "dto",
         "actions",
         "builders",
-        "erp"
+        "erp",
+        "toolkit"
     ],
-    "homepage": "https://github.com/ismaildasci/laravel-toolkit",
+    "homepage": "https://github.com/ismaildasci/laravel-sapb1-toolkit",
     "license": "MIT",
     "authors": [
         {
