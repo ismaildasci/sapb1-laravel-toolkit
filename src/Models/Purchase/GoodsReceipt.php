@@ -100,7 +100,7 @@ class GoodsReceipt extends SapB1Model
      */
     public function toPurchaseInvoice(): PurchaseInvoice
     {
-        $invoice = new PurchaseInvoice();
+        $invoice = new PurchaseInvoice;
         $invoice->fill([
             'CardCode' => $this->CardCode,
             'CardName' => $this->CardName,

@@ -100,7 +100,7 @@ class PurchaseRequest extends SapB1Model
      */
     public function toPurchaseOrder(): PurchaseOrder
     {
-        $order = new PurchaseOrder();
+        $order = new PurchaseOrder;
 
         $lines = [];
         foreach ($this->DocumentLines ?? [] as $line) {

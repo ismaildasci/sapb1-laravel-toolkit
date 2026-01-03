@@ -101,7 +101,7 @@ class PurchaseOrder extends SapB1Model
      */
     public function toGoodsReceipt(): GoodsReceipt
     {
-        $receipt = new GoodsReceipt();
+        $receipt = new GoodsReceipt;
         $receipt->fill([
             'CardCode' => $this->CardCode,
             'CardName' => $this->CardName,
@@ -128,7 +128,7 @@ class PurchaseOrder extends SapB1Model
      */
     public function toPurchaseInvoice(): PurchaseInvoice
     {
-        $invoice = new PurchaseInvoice();
+        $invoice = new PurchaseInvoice;
         $invoice->fill([
             'CardCode' => $this->CardCode,
             'CardName' => $this->CardName,

@@ -525,7 +525,7 @@ class QueryBuilder
                 $parts[] = $clause;
             } else {
                 $boolean = $where['boolean'] === 'or' ? ' or ' : ' and ';
-                $parts[] = $boolean . $clause;
+                $parts[] = $boolean.$clause;
             }
         }
 
@@ -570,11 +570,11 @@ class QueryBuilder
     protected function buildInClause(string $field, array $values): string
     {
         $clauses = array_map(
-            fn ($value) => "{$field} eq " . $this->formatValue($value),
+            fn ($value) => "{$field} eq ".$this->formatValue($value),
             $values
         );
 
-        return '(' . implode(' or ', $clauses) . ')';
+        return '('.implode(' or ', $clauses).')';
     }
 
     /**
@@ -608,7 +608,7 @@ class QueryBuilder
         }
 
         if ($value instanceof \DateTimeInterface) {
-            return "'" . $value->format('Y-m-d') . "'";
+            return "'".$value->format('Y-m-d')."'";
         }
 
         if ($value instanceof \BackedEnum) {
@@ -647,7 +647,7 @@ class QueryBuilder
         $modelClass = get_class($this->model);
 
         /** @var SapB1Model $model */
-        $model = new $modelClass();
+        $model = new $modelClass;
         $model->setRawAttributes($data, true);
         $model->exists = true;
 

@@ -96,7 +96,7 @@ class Invoice extends SapB1Model
      */
     public function toCreditNote(): CreditNote
     {
-        $creditNote = new CreditNote();
+        $creditNote = new CreditNote;
         $creditNote->fill([
             'CardCode' => $this->CardCode,
             'CardName' => $this->CardName,

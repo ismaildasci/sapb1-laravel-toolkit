@@ -108,7 +108,7 @@ trait HasAttributes
     public function setAttribute(string $key, mixed $value): static
     {
         // Check for mutator
-        $mutator = 'set' . $this->studly($key) . 'Attribute';
+        $mutator = 'set'.$this->studly($key).'Attribute';
         if (method_exists($this, $mutator)) {
             $value = $this->{$mutator}($value);
         }
@@ -135,7 +135,7 @@ trait HasAttributes
         $value = $this->attributes[$key];
 
         // Check for accessor
-        $accessor = 'get' . $this->studly($key) . 'Attribute';
+        $accessor = 'get'.$this->studly($key).'Attribute';
         if (method_exists($this, $accessor)) {
             return $this->{$accessor}($value);
         }

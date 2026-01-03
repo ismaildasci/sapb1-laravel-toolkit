@@ -57,7 +57,7 @@ trait HasRelationships
     protected function belongsTo(string $related, ?string $foreignKey = null, ?string $ownerKey = null): BelongsTo
     {
         $foreignKey ??= $this->guessBelongsToForeignKey($related);
-        $ownerKey ??= (new $related())->getKeyName();
+        $ownerKey ??= (new $related)->getKeyName();
 
         return new BelongsTo($this, $related, $foreignKey, $ownerKey);
     }
@@ -69,7 +69,7 @@ trait HasRelationships
     {
         $baseName = class_basename(static::class);
 
-        return lcfirst($baseName) . 'Id';
+        return lcfirst($baseName).'Id';
     }
 
     /**
@@ -81,7 +81,7 @@ trait HasRelationships
     {
         $baseName = class_basename($related);
 
-        return lcfirst($baseName) . 'Id';
+        return lcfirst($baseName).'Id';
     }
 
     /**
@@ -224,7 +224,7 @@ trait HasRelationships
         return array_map(
             function (array $item) use ($relatedClass): SapB1Model {
                 /** @var SapB1Model $model */
-                $model = new $relatedClass();
+                $model = new $relatedClass;
 
                 return $model->setRawAttributes($item, true);
             },

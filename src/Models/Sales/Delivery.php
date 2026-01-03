@@ -103,7 +103,7 @@ class Delivery extends SapB1Model
      */
     public function toInvoice(): Invoice
     {
-        $invoice = new Invoice();
+        $invoice = new Invoice;
         $invoice->fill([
             'CardCode' => $this->CardCode,
             'CardName' => $this->CardName,

@@ -66,7 +66,7 @@ abstract class Relation
      */
     protected function getRelatedModel(): SapB1Model
     {
-        return new $this->related();
+        return new $this->related;
     }
 
     /**

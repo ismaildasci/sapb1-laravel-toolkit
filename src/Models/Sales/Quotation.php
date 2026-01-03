@@ -90,7 +90,7 @@ class Quotation extends SapB1Model
      */
     public function toOrder(): Order
     {
-        $order = new Order();
+        $order = new Order;
         $order->fill([
             'CardCode' => $this->CardCode,
             'CardName' => $this->CardName,

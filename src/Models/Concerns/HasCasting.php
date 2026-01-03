@@ -10,7 +10,6 @@ use SapB1\Toolkit\Models\Casts\AsArray;
 use SapB1\Toolkit\Models\Casts\AsBoolean;
 use SapB1\Toolkit\Models\Casts\AsDate;
 use SapB1\Toolkit\Models\Casts\AsDateTime;
-use SapB1\Toolkit\Models\Casts\AsDecimal;
 use SapB1\Toolkit\Models\Casts\AsFloat;
 use SapB1\Toolkit\Models\Casts\AsInteger;
 use SapB1\Toolkit\Models\Casts\CastInterface;
@@ -132,7 +131,7 @@ trait HasCasting
     protected function getCaster(string $casterClass): CastInterface
     {
         if (! isset($this->casterCache[$casterClass])) {
-            $this->casterCache[$casterClass] = new $casterClass();
+            $this->casterCache[$casterClass] = new $casterClass;
         }
 
         return $this->casterCache[$casterClass];

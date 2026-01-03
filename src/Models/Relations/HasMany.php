@@ -22,7 +22,7 @@ class HasMany extends Relation
         $parentKey = $this->getParentKey();
 
         if ($parentKey === null) {
-            return new ModelCollection();
+            return new ModelCollection;
         }
 
         return $this->related::where($this->foreignKey, $parentKey)->get();
@@ -92,7 +92,7 @@ class HasMany extends Relation
         $parentKey = $this->getParentKey();
 
         if ($parentKey === null) {
-            return new ModelCollection();
+            return new ModelCollection;
         }
 
         return $this->related::where($this->foreignKey, $parentKey)

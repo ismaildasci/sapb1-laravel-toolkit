@@ -9,6 +9,7 @@ beforeEach(function () {
     $this->model = new class extends SapB1Model
     {
         protected static string $entity = 'TestEntity';
+
         protected static string $primaryKey = 'DocEntry';
     };
 });

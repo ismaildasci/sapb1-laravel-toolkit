@@ -88,7 +88,7 @@ class PurchaseQuotation extends SapB1Model
      */
     public function toPurchaseOrder(): PurchaseOrder
     {
-        $order = new PurchaseOrder();
+        $order = new PurchaseOrder;
         $order->fill([
             'CardCode' => $this->CardCode,
             'CardName' => $this->CardName,

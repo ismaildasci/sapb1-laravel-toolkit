@@ -93,7 +93,7 @@ class PurchaseInvoice extends SapB1Model
      */
     public function toPurchaseCreditNote(): PurchaseCreditNote
     {
-        $creditNote = new PurchaseCreditNote();
+        $creditNote = new PurchaseCreditNote;
         $creditNote->fill([
             'CardCode' => $this->CardCode,
             'CardName' => $this->CardName,

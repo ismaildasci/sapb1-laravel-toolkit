@@ -37,7 +37,7 @@ class ModelNotFoundException extends RuntimeException
         $this->message = sprintf(
             'No query results for model [%s]%s',
             $model,
-            $this->ids ? ' with ID(s) ' . implode(', ', $this->ids) : ''
+            $this->ids ? ' with ID(s) '.implode(', ', $this->ids) : ''
         );
 
         return $this;

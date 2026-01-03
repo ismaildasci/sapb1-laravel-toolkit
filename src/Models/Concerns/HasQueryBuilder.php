@@ -19,7 +19,7 @@ trait HasQueryBuilder
      */
     public static function query(): QueryBuilder
     {
-        return (new static())->newQuery();
+        return (new static)->newQuery();
     }
 
     /**
@@ -226,7 +226,7 @@ trait HasQueryBuilder
     public function __call(string $method, array $arguments): mixed
     {
         // Check for scope method
-        $scopeMethod = 'scope' . ucfirst($method);
+        $scopeMethod = 'scope'.ucfirst($method);
 
         if (method_exists($this, $scopeMethod)) {
             $query = $this->newQuery();
@@ -248,8 +248,8 @@ trait HasQueryBuilder
      */
     public static function __callStatic(string $method, array $arguments): mixed
     {
-        $instance = new static();
-        $scopeMethod = 'scope' . ucfirst($method);
+        $instance = new static;
+        $scopeMethod = 'scope'.ucfirst($method);
 
         if (method_exists($instance, $scopeMethod)) {
             $query = $instance->newQuery();

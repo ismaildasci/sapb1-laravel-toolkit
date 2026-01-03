@@ -106,7 +106,6 @@ class ModelCollection implements Countable, IteratorAggregate, JsonSerializable
      * Filter items by a callback.
      *
      * @param  callable(TModel, int): bool  $callback
-     * @return static
      */
     public function filter(callable $callback): static
     {
@@ -117,8 +116,6 @@ class ModelCollection implements Countable, IteratorAggregate, JsonSerializable
 
     /**
      * Filter items by a field value.
-     *
-     * @return static
      */
     public function where(string $field, mixed $value): static
     {
@@ -129,7 +126,6 @@ class ModelCollection implements Countable, IteratorAggregate, JsonSerializable
      * Filter items where field is in array.
      *
      * @param  array<int, mixed>  $values
-     * @return static
      */
     public function whereIn(string $field, array $values): static
     {
@@ -138,8 +134,6 @@ class ModelCollection implements Countable, IteratorAggregate, JsonSerializable
 
     /**
      * Filter items where field is not null.
-     *
-     * @return static
      */
     public function whereNotNull(string $field): static
     {
@@ -205,8 +199,6 @@ class ModelCollection implements Countable, IteratorAggregate, JsonSerializable
 
     /**
      * Sort by a field.
-     *
-     * @return static
      */
     public function sortBy(string $field, bool $descending = false): static
     {
@@ -226,8 +218,6 @@ class ModelCollection implements Countable, IteratorAggregate, JsonSerializable
 
     /**
      * Sort by descending.
-     *
-     * @return static
      */
     public function sortByDesc(string $field): static
     {
@@ -236,8 +226,6 @@ class ModelCollection implements Countable, IteratorAggregate, JsonSerializable
 
     /**
      * Take first n items.
-     *
-     * @return static
      */
     public function take(int $count): static
     {
@@ -246,8 +234,6 @@ class ModelCollection implements Countable, IteratorAggregate, JsonSerializable
 
     /**
      * Skip first n items.
-     *
-     * @return static
      */
     public function skip(int $count): static
     {
@@ -382,7 +368,6 @@ class ModelCollection implements Countable, IteratorAggregate, JsonSerializable
      * Add item to collection.
      *
      * @param  TModel  $item
-     * @return static
      */
     public function push(SapB1Model $item): static
     {
@@ -395,7 +380,6 @@ class ModelCollection implements Countable, IteratorAggregate, JsonSerializable
      * Merge another collection.
      *
      * @param  ModelCollection<TModel>  $collection
-     * @return static
      */
     public function merge(ModelCollection $collection): static
     {
@@ -406,7 +390,6 @@ class ModelCollection implements Countable, IteratorAggregate, JsonSerializable
      * Load a relationship on all models.
      *
      * @param  string|array<int, string>  $relations
-     * @return static
      */
     public function load(string|array $relations): static
     {

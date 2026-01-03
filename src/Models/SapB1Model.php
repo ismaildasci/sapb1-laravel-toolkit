@@ -6,7 +6,6 @@ namespace SapB1\Toolkit\Models;
 
 use JsonSerializable;
 use SapB1\Facades\SapB1;
-use SapB1\Toolkit\Exceptions\ModelNotFoundException;
 use SapB1\Toolkit\Models\Concerns\HasAttributes;
 use SapB1\Toolkit\Models\Concerns\HasCasting;
 use SapB1\Toolkit\Models\Concerns\HasDirtyTracking;
