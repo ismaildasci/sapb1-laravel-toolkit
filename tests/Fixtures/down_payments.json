@@ -1,0 +1,165 @@
+{
+    "sales": {
+        "single": {
+            "DocEntry": 1,
+            "DocNum": 7001,
+            "DocType": "dDocument_Items",
+            "DocDate": "2024-01-10",
+            "DocDueDate": "2024-02-10",
+            "CardCode": "C001",
+            "CardName": "Test Customer Ltd.",
+            "DocCurrency": "TRY",
+            "DocRate": 1.0,
+            "DocTotal": 5000.00,
+            "DocTotalFc": 5000.00,
+            "VatSum": 900.00,
+            "VatSumFc": 900.00,
+            "DownPaymentType": "dpt_Request",
+            "DownPaymentStatus": "so_Open",
+            "DownPaymentAmount": 5000.00,
+            "DownPaymentAmountFC": 5000.00,
+            "DownPaymentPercentage": 50.0,
+            "DownPaymentToDraw": 0,
+            "DownPaymentToDrawFC": 0.0,
+            "Comments": "Down payment for order 1001",
+            "DocumentStatus": "bost_Open",
+            "Cancelled": "tNO",
+            "Series": 7,
+            "DocumentLines": [
+                {
+                    "LineNum": 0,
+                    "ItemCode": "ITEM001",
+                    "ItemDescription": "Test Product A",
+                    "Quantity": 10.0,
+                    "UnitPrice": 500.00,
+                    "Currency": "TRY",
+                    "LineTotal": 5000.00,
+                    "VatGroup": "KDV18",
+                    "VatSum": 900.00,
+                    "WarehouseCode": "WH01"
+                }
+            ]
+        },
+        "list": {
+            "value": [
+                {
+                    "DocEntry": 1,
+                    "DocNum": 7001,
+                    "DocDate": "2024-01-10",
+                    "CardCode": "C001",
+                    "CardName": "Test Customer Ltd.",
+                    "DocTotal": 5000.00,
+                    "DownPaymentType": "dpt_Request",
+                    "DocumentStatus": "bost_Open"
+                },
+                {
+                    "DocEntry": 2,
+                    "DocNum": 7002,
+                    "DocDate": "2024-01-12",
+                    "CardCode": "C002",
+                    "CardName": "Another Customer Inc.",
+                    "DocTotal": 10000.00,
+                    "DownPaymentType": "dpt_Request",
+                    "DocumentStatus": "bost_Open"
+                },
+                {
+                    "DocEntry": 3,
+                    "DocNum": 7003,
+                    "DocDate": "2024-01-15",
+                    "CardCode": "C001",
+                    "CardName": "Test Customer Ltd.",
+                    "DocTotal": 2500.00,
+                    "DownPaymentType": "dpt_Request",
+                    "DocumentStatus": "bost_Close"
+                }
+            ],
+            "odata.nextLink": "DownPayments?$skip=20"
+        },
+        "created": {
+            "DocEntry": 4,
+            "DocNum": 7004
+        },
+        "error": {
+            "error": {
+                "code": "-2028",
+                "message": {
+                    "lang": "en-us",
+                    "value": "Business partner code 'INVALID' does not exist"
+                }
+            }
+        }
+    },
+    "purchase": {
+        "single": {
+            "DocEntry": 1,
+            "DocNum": 8001,
+            "DocType": "dDocument_Items",
+            "DocDate": "2024-01-08",
+            "DocDueDate": "2024-02-08",
+            "CardCode": "S001",
+            "CardName": "Test Supplier Co.",
+            "DocCurrency": "TRY",
+            "DocRate": 1.0,
+            "DocTotal": 15000.00,
+            "DocTotalFc": 15000.00,
+            "VatSum": 2700.00,
+            "VatSumFc": 2700.00,
+            "DownPaymentType": "dpt_Request",
+            "DownPaymentStatus": "so_Open",
+            "DownPaymentAmount": 15000.00,
+            "DownPaymentAmountFC": 15000.00,
+            "DownPaymentPercentage": 30.0,
+            "DownPaymentToDraw": 0,
+            "DownPaymentToDrawFC": 0.0,
+            "Comments": "Down payment for purchase order 2001",
+            "DocumentStatus": "bost_Open",
+            "Cancelled": "tNO",
+            "Series": 8,
+            "Requester": "John Doe",
+            "RequesterEmail": "john.doe@company.com",
+            "DocumentLines": [
+                {
+                    "LineNum": 0,
+                    "ItemCode": "ITEM001",
+                    "ItemDescription": "Test Product A",
+                    "Quantity": 30.0,
+                    "UnitPrice": 500.00,
+                    "Currency": "TRY",
+                    "LineTotal": 15000.00,
+                    "VatGroup": "KDV18",
+                    "VatSum": 2700.00,
+                    "WarehouseCode": "WH01"
+                }
+            ]
+        },
+        "list": {
+            "value": [
+                {
+                    "DocEntry": 1,
+                    "DocNum": 8001,
+                    "DocDate": "2024-01-08",
+                    "CardCode": "S001",
+                    "CardName": "Test Supplier Co.",
+                    "DocTotal": 15000.00,
+                    "DownPaymentType": "dpt_Request",
+                    "DocumentStatus": "bost_Open"
+                },
+                {
+                    "DocEntry": 2,
+                    "DocNum": 8002,
+                    "DocDate": "2024-01-10",
+                    "CardCode": "S002",
+                    "CardName": "Another Supplier Ltd.",
+                    "DocTotal": 25000.00,
+                    "DownPaymentType": "dpt_Request",
+                    "DocumentStatus": "bost_Close"
+                }
+            ],
+            "odata.nextLink": "PurchaseDownPayments?$skip=20"
+        },
+        "created": {
+            "DocEntry": 3,
+            "DocNum": 8003
+        }
+    }
+}
