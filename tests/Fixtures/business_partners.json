@@ -1,0 +1,130 @@
+{
+    "single": {
+        "CardCode": "C001",
+        "CardName": "Test Customer Ltd.",
+        "CardType": "cCustomer",
+        "GroupCode": 100,
+        "Address": "Test Street 123",
+        "ZipCode": "34000",
+        "City": "Istanbul",
+        "Country": "TR",
+        "Phone1": "+90 212 555 0001",
+        "Phone2": null,
+        "Fax": null,
+        "Cellular": "+90 532 555 0001",
+        "EmailAddress": "info@testcustomer.com",
+        "Website": "www.testcustomer.com",
+        "ContactPerson": "John Doe",
+        "Currency": "TRY",
+        "Balance": 15000.00,
+        "OrdersBalance": 11800.00,
+        "DeliveryNotesBalance": 0.00,
+        "Valid": "tYES",
+        "Frozen": "tNO",
+        "FederalTaxID": "1234567890",
+        "PayTermsGrpCode": 1,
+        "IntrestRatePercent": 0.0,
+        "CreditLimit": 100000.00,
+        "CommissionPercent": 0.0,
+        "CommissionGroupCode": -1,
+        "FreeText": null,
+        "SlpCode": 1,
+        "Properties1": "tNO",
+        "Properties2": "tNO",
+        "BPAddresses": [
+            {
+                "AddressName": "MAIN",
+                "Street": "Test Street 123",
+                "Block": null,
+                "ZipCode": "34000",
+                "City": "Istanbul",
+                "County": null,
+                "Country": "TR",
+                "State": null,
+                "AddressType": "bo_BillTo",
+                "RowNum": 0
+            },
+            {
+                "AddressName": "MAIN",
+                "Street": "Test Street 123",
+                "Block": null,
+                "ZipCode": "34000",
+                "City": "Istanbul",
+                "County": null,
+                "Country": "TR",
+                "State": null,
+                "AddressType": "bo_ShipTo",
+                "RowNum": 1
+            }
+        ],
+        "ContactEmployees": [
+            {
+                "InternalCode": 1,
+                "Name": "John Doe",
+                "Title": "Manager",
+                "Position": "Sales Manager",
+                "Phone1": "+90 212 555 0001",
+                "Phone2": null,
+                "MobilePhone": "+90 532 555 0001",
+                "Fax": null,
+                "E_Mail": "john@testcustomer.com",
+                "Active": "tYES"
+            }
+        ]
+    },
+    "list": {
+        "value": [
+            {
+                "CardCode": "C001",
+                "CardName": "Test Customer Ltd.",
+                "CardType": "cCustomer",
+                "Balance": 15000.00,
+                "Valid": "tYES"
+            },
+            {
+                "CardCode": "C002",
+                "CardName": "Another Customer Inc.",
+                "CardType": "cCustomer",
+                "Balance": 5000.00,
+                "Valid": "tYES"
+            },
+            {
+                "CardCode": "S001",
+                "CardName": "Test Supplier Co.",
+                "CardType": "cSupplier",
+                "Balance": -25000.00,
+                "Valid": "tYES"
+            }
+        ],
+        "odata.nextLink": "BusinessPartners?$skip=20"
+    },
+    "created": {
+        "CardCode": "C003"
+    },
+    "customers": {
+        "value": [
+            {
+                "CardCode": "C001",
+                "CardName": "Test Customer Ltd.",
+                "CardType": "cCustomer",
+                "Balance": 15000.00
+            },
+            {
+                "CardCode": "C002",
+                "CardName": "Another Customer Inc.",
+                "CardType": "cCustomer",
+                "Balance": 5000.00
+            }
+        ]
+    },
+    "suppliers": {
+        "value": [
+            {
+                "CardCode": "S001",
+                "CardName": "Test Supplier Co.",
+                "CardType": "cSupplier",
+                "Balance": -25000.00
+            }
+        ]
+    }
+}

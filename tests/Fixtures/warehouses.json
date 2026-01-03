@@ -1,0 +1,42 @@
+{
+    "single": {
+        "WarehouseCode": "WH01",
+        "WarehouseName": "Main Warehouse",
+        "Location": 1,
+        "DropShip": "tNO",
+        "ExemptTax": "tNO",
+        "Nettable": "tYES",
+        "Street": "Industrial Zone Street 1",
+        "City": "Istanbul",
+        "ZipCode": "34100",
+        "Country": "TR",
+        "State": null,
+        "Inactive": "tNO",
+        "EnableBinLocations": "tNO"
+    },
+    "list": {
+        "value": [
+            {
+                "WarehouseCode": "WH01",
+                "WarehouseName": "Main Warehouse",
+                "City": "Istanbul",
+                "Inactive": "tNO"
+            },
+            {
+                "WarehouseCode": "WH02",
+                "WarehouseName": "Secondary Warehouse",
+                "City": "Ankara",
+                "Inactive": "tNO"
+            },
+            {
+                "WarehouseCode": "WH03",
+                "WarehouseName": "Archive Warehouse",
+                "City": "Izmir",
+                "Inactive": "tYES"
+            }
+        ]
+    },
+    "created": {
+        "WarehouseCode": "WH04"
+    }
+}

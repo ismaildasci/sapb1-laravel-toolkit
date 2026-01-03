@@ -1,0 +1,161 @@
+{
+    "incoming": {
+        "single": {
+            "DocEntry": 1,
+            "DocNum": 8001,
+            "DocType": "rCustomer",
+            "DocDate": "2024-01-25",
+            "CardCode": "C001",
+            "CardName": "Test Customer Ltd.",
+            "DocCurrency": "TRY",
+            "DocRate": 1.0,
+            "CashSum": 5000.00,
+            "CashSumFC": 5000.00,
+            "TransferSum": 6800.00,
+            "TransferSumFC": 6800.00,
+            "CheckSum": 0.00,
+            "CheckSumFC": 0.00,
+            "CreditSum": 0.00,
+            "CreditSumFC": 0.00,
+            "DocTotal": 11800.00,
+            "DocTotalFC": 11800.00,
+            "Cancelled": "tNO",
+            "HandWritten": "tNO",
+            "TransferReference": "TRF-2024-001",
+            "TransferAccount": "102.01",
+            "TransferDate": "2024-01-25",
+            "JournalRemarks": "Payment for invoice 5001",
+            "CashAccount": "100.01",
+            "Series": 8,
+            "PaymentInvoices": [
+                {
+                    "LineNum": 0,
+                    "DocEntry": 1,
+                    "InvoiceType": "it_Invoice",
+                    "SumApplied": 11800.00,
+                    "AppliedFC": 11800.00,
+                    "DiscountPercent": 0.0,
+                    "TotalDiscount": 0.00,
+                    "TotalDiscountFC": 0.00
+                }
+            ],
+            "PaymentChecks": [],
+            "PaymentCreditCards": []
+        },
+        "list": {
+            "value": [
+                {
+                    "DocEntry": 1,
+                    "DocNum": 8001,
+                    "DocDate": "2024-01-25",
+                    "CardCode": "C001",
+                    "CardName": "Test Customer Ltd.",
+                    "DocTotal": 11800.00,
+                    "Cancelled": "tNO"
+                },
+                {
+                    "DocEntry": 2,
+                    "DocNum": 8002,
+                    "DocDate": "2024-01-26",
+                    "CardCode": "C002",
+                    "CardName": "Another Customer Inc.",
+                    "DocTotal": 5900.00,
+                    "Cancelled": "tNO"
+                }
+            ],
+            "odata.nextLink": "IncomingPayments?$skip=20"
+        },
+        "created": {
+            "DocEntry": 3,
+            "DocNum": 8003
+        }
+    },
+    "outgoing": {
+        "single": {
+            "DocEntry": 1,
+            "DocNum": 9001,
+            "DocType": "rSupplier",
+            "DocDate": "2024-01-28",
+            "CardCode": "S001",
+            "CardName": "Test Supplier Co.",
+            "DocCurrency": "TRY",
+            "DocRate": 1.0,
+            "TransferSum": 25000.00,
+            "TransferSumFC": 25000.00,
+            "DocTotal": 25000.00,
+            "DocTotalFC": 25000.00,
+            "Cancelled": "tNO",
+            "TransferReference": "TRF-OUT-2024-001",
+            "TransferAccount": "102.01",
+            "TransferDate": "2024-01-28",
+            "JournalRemarks": "Payment for purchase invoice 3001",
+            "Series": 9,
+            "PaymentInvoices": [
+                {
+                    "LineNum": 0,
+                    "DocEntry": 1,
+                    "InvoiceType": "it_PurchaseInvoice",
+                    "SumApplied": 25000.00,
+                    "AppliedFC": 25000.00,
+                    "DiscountPercent": 0.0,
+                    "TotalDiscount": 0.00,
+                    "TotalDiscountFC": 0.00
+                }
+            ]
+        },
+        "list": {
+            "value": [
+                {
+                    "DocEntry": 1,
+                    "DocNum": 9001,
+                    "DocDate": "2024-01-28",
+                    "CardCode": "S001",
+                    "CardName": "Test Supplier Co.",
+                    "DocTotal": 25000.00,
+                    "Cancelled": "tNO"
+                }
+            ],
+            "odata.nextLink": "VendorPayments?$skip=20"
+        },
+        "created": {
+            "DocEntry": 2,
+            "DocNum": 9002
+        }
+    },
+    "methods": {
+        "cash": {
+            "CashSum": 5000.00,
+            "CashAccount": "100.01"
+        },
+        "transfer": {
+            "TransferSum": 6800.00,
+            "TransferAccount": "102.01",
+            "TransferReference": "TRF-2024-001",
+            "TransferDate": "2024-01-25"
+        },
+        "check": {
+            "PaymentChecks": [
+                {
+                    "DueDate": "2024-02-25",
+                    "CheckNumber": 123456,
+                    "BankCode": "001",
+                    "Branch": "Istanbul",
+                    "CheckAccount": "103.01",
+                    "CheckSum": 10000.00
+                }
+            ]
+        },
+        "credit_card": {
+            "PaymentCreditCards": [
+                {
+                    "CreditCard": 1,
+                    "CreditCardNumber": "************1234",
+                    "CardValidUntil": "2025-12-31",
+                    "VoucherNum": "CC-2024-001",
+                    "CreditSum": 5000.00,
+                    "NumOfPayments": 1
+                }
+            ]
+        }
+    }
+}

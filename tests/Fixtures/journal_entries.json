@@ -1,0 +1,60 @@
+{
+    "single": {
+        "JdtNum": 1,
+        "Number": 1,
+        "Series": 10,
+        "Memo": "Test journal entry",
+        "Reference": "JE-2024-001",
+        "Reference2": null,
+        "TransactionCode": null,
+        "Project": null,
+        "TaxDate": "2024-01-30",
+        "DueDate": "2024-01-30",
+        "ReferenceDate": "2024-01-30",
+        "JournalEntryLines": [
+            {
+                "Line_ID": 0,
+                "AccountCode": "600.01",
+                "Debit": 10000.00,
+                "Credit": 0.00,
+                "FCDebit": 10000.00,
+                "FCCredit": 0.00,
+                "FCCurrency": "TRY",
+                "ShortName": "Sales Revenue",
+                "LineMemo": "Revenue recognition"
+            },
+            {
+                "Line_ID": 1,
+                "AccountCode": "120.01",
+                "Debit": 0.00,
+                "Credit": 10000.00,
+                "FCDebit": 0.00,
+                "FCCredit": 10000.00,
+                "FCCurrency": "TRY",
+                "ShortName": "Accounts Receivable",
+                "LineMemo": "Customer receivable"
+            }
+        ]
+    },
+    "list": {
+        "value": [
+            {
+                "JdtNum": 1,
+                "Number": 1,
+                "Memo": "Test journal entry",
+                "ReferenceDate": "2024-01-30"
+            },
+            {
+                "JdtNum": 2,
+                "Number": 2,
+                "Memo": "Expense entry",
+                "ReferenceDate": "2024-01-31"
+            }
+        ],
+        "odata.nextLink": "JournalEntries?$skip=20"
+    },
+    "created": {
+        "JdtNum": 3,
+        "Number": 3
+    }
+}
