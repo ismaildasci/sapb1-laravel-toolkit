@@ -42,7 +42,8 @@ class DocumentTypeCast implements CastsAttributes
             return null;
         }
 
-        if ($value instanceof DocumentType) {
+        // Handle DocumentType enum
+        if (is_object($value) && $value instanceof DocumentType) {
             return $value->value;
         }
 

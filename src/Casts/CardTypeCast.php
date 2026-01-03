@@ -42,7 +42,8 @@ class CardTypeCast implements CastsAttributes
             return null;
         }
 
-        if ($value instanceof CardType) {
+        // Handle CardType enum
+        if (is_object($value) && $value instanceof CardType) {
             return $value->value;
         }
 

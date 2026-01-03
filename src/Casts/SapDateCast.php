@@ -47,14 +47,13 @@ class SapDateCast implements CastsAttributes
             return null;
         }
 
-        if ($value instanceof \DateTimeInterface) {
+        // Handle DateTimeInterface (Carbon, DateTime, etc.)
+        if (is_object($value) && method_exists($value, 'format')) {
+            /** @var \DateTimeInterface $value */
             return $value->format('Y-m-d');
         }
 
-        if (is_string($value)) {
-            return Carbon::parse($value)->format('Y-m-d');
-        }
-
-        return null;
+        // Handle string dates
+        return Carbon::parse((string) $value)->format('Y-m-d');
     }
 }
