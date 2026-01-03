@@ -2,6 +2,52 @@
 
 All notable changes to `laravel-sapb1-toolkit` will be documented in this file.
 
+## v1.2.0 - 2026-01-03
+
+### Added
+
+#### Business Partner Module Extension (9 new entities)
+- `BusinessPartnerGroupAction`, `BusinessPartnerGroupDto`, `BusinessPartnerGroupBuilder` - BP groups
+- `SalesPersonAction`, `SalesPersonDto`, `SalesPersonBuilder` - Sales persons with commission tracking
+- `TerritoryAction`, `TerritoryDto`, `TerritoryBuilder` - Territory management
+- `IndustryAction`, `IndustryDto`, `IndustryBuilder` - Industry classifications
+- `SalesOpportunityAction`, `SalesOpportunityDto`, `SalesOpportunityLineDto`, `SalesOpportunityBuilder` - CRM opportunities
+- `SalesStageAction`, `SalesStageDto`, `SalesStageBuilder` - Sales pipeline stages
+- `ContactAction`, `ContactBuilder` - Standalone contact employee management (reuses ContactPersonDto)
+- `CampaignAction`, `CampaignDto`, `CampaignItemDto`, `CampaignBuilder` - Marketing campaigns
+- `CampaignResponseTypeAction`, `CampaignResponseTypeDto`, `CampaignResponseTypeBuilder` - Campaign response types
+
+#### Service Module (9 new entities)
+- `ServiceCallAction`, `ServiceCallDto`, `ServiceCallBuilder` - Service call management with close action
+- `ServiceContractAction`, `ServiceContractDto`, `ServiceContractLineDto`, `ServiceContractBuilder` - Service contracts with lines
+- `ServiceCallOriginAction`, `ServiceCallOriginDto`, `ServiceCallOriginBuilder` - Call origins
+- `ServiceCallTypeAction`, `ServiceCallTypeDto`, `ServiceCallTypeBuilder` - Call types
+- `ServiceCallStatusAction`, `ServiceCallStatusDto`, `ServiceCallStatusBuilder` - Call statuses
+- `ServiceCallSolutionStatusAction`, `ServiceCallSolutionStatusDto`, `ServiceCallSolutionStatusBuilder` - Solution statuses
+- `ServiceCallProblemTypeAction`, `ServiceCallProblemTypeDto`, `ServiceCallProblemTypeBuilder` - Problem types
+- `ServiceCallProblemSubTypeAction`, `ServiceCallProblemSubTypeDto`, `ServiceCallProblemSubTypeBuilder` - Problem sub-types
+- `ServiceGroupAction`, `ServiceGroupDto`, `ServiceGroupBuilder` - Service groups
+
+#### New Enums
+- `ServiceCallPriority` - Low, Medium, High
+- `OpportunityStatus` - Open, Won, Lost
+- `CampaignStatus` - Draft, Active, Finished, Cancelled
+
+### Changed
+- Total entities increased from 54 to 72 (+18)
+- Total DTOs: ~100 (including line DTOs)
+- Total Builders: ~75
+- Total Actions: ~75
+- PHPStan Level 8 compliance maintained
+
+### Tests
+- 256 new unit tests for v1.2.0 entities
+- DTO tests: fromArray, fromResponse, toArray, null filtering
+- Builder tests: fluent interface, method chaining, line/item management
+- Total test count: ~890+
+
+---
+
 ## v1.1.0 - 2026-01-03
 
 ### Added
@@ -54,6 +100,12 @@ All notable changes to `laravel-sapb1-toolkit` will be documented in this file.
 - Total Builders: 57
 - Total Actions: 56
 - PHPStan Level 8 compliance maintained
+
+### Tests
+- Comprehensive unit test coverage for all new entities
+- 97 test files, 634 tests total
+- DTO tests: fromArray, fromResponse, toArray methods
+- Builder tests: fluent interface, method chaining, reset functionality
 
 ---
 
