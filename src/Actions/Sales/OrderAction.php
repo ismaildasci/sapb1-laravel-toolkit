@@ -65,9 +65,10 @@ final class OrderAction extends DocumentAction
     public function update(int $docEntry, OrderBuilder|array $data): OrderDto
     {
         $payload = $data instanceof OrderBuilder ? $data->build() : $data;
-        $response = $this->updateDocument($docEntry, $payload);
+        $this->updateDocument($docEntry, $payload);
 
-        return OrderDto::fromResponse($response);
+        // SAP B1 PATCH returns 204 No Content, so we fetch the updated document
+        return $this->find($docEntry);
     }
 
     /**

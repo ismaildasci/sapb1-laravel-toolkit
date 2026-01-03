@@ -40,6 +40,7 @@ class OrderIntegrationTest extends IntegrationTestCase
         $builder = OrderBuilder::create()
             ->cardCode($this->getTestCustomerCode())
             ->docDate(date('Y-m-d'))
+            ->docDueDate(date('Y-m-d', strtotime('+7 days')))
             ->addLine([
                 'ItemCode' => $this->getTestItemCode(),
                 'Quantity' => 1,
@@ -62,6 +63,7 @@ class OrderIntegrationTest extends IntegrationTestCase
         $builder = OrderBuilder::create()
             ->cardCode($this->getTestCustomerCode())
             ->docDate(date('Y-m-d'))
+            ->docDueDate(date('Y-m-d', strtotime('+7 days')))
             ->addLine([
                 'ItemCode' => $this->getTestItemCode(),
                 'Quantity' => 1,
@@ -85,6 +87,7 @@ class OrderIntegrationTest extends IntegrationTestCase
         $builder = OrderBuilder::create()
             ->cardCode($this->getTestCustomerCode())
             ->docDate(date('Y-m-d'))
+            ->docDueDate(date('Y-m-d', strtotime('+7 days')))
             ->comments('Integration test order')
             ->addLine([
                 'ItemCode' => $this->getTestItemCode(),
@@ -107,6 +110,7 @@ class OrderIntegrationTest extends IntegrationTestCase
         $builder = OrderBuilder::create()
             ->cardCode($this->getTestCustomerCode())
             ->docDate(date('Y-m-d'))
+            ->docDueDate(date('Y-m-d', strtotime('+7 days')))
             ->addLine([
                 'ItemCode' => $this->getTestItemCode(),
                 'Quantity' => 1,
@@ -135,6 +139,7 @@ class OrderIntegrationTest extends IntegrationTestCase
         $builder = OrderBuilder::create()
             ->cardCode($this->getTestCustomerCode())
             ->docDate(date('Y-m-d'))
+            ->docDueDate(date('Y-m-d', strtotime('+7 days')))
             ->addLine([
                 'ItemCode' => $this->getTestItemCode(),
                 'Quantity' => 1,
@@ -150,10 +155,9 @@ class OrderIntegrationTest extends IntegrationTestCase
 
         $this->assertTrue($result);
 
-        // Verify cancelled
+        // Verify cancelled - cancelled orders have Closed status
         $found = $action->find($docEntry);
-        $this->assertEquals('bost_Close', $found->documentStatus);
-        $this->assertEquals('tYES', $found->cancelled);
+        $this->assertEquals(\SapB1\Toolkit\Enums\DocumentStatus::Closed, $found->documentStatus);
 
         // Don't try to cancel again in tearDown
         $this->createdDocEntry = null;

@@ -56,13 +56,12 @@ abstract class IntegrationTestCase extends TestCase
 
         try {
             // Try to connect to SAP B1 using SDK's actual API
-            $client = \SapB1\Facades\SapB1::connection('default');
-            // Check if session is valid (this will attempt login if needed)
-            if ($client->hasValidSession()) {
-                self::$connectionAvailable = true;
-            } else {
-                self::$connectionAvailable = false;
-            }
+            // Make a real request to verify connection works
+            $response = \SapB1\Facades\SapB1::query()->top(1)->select('CardCode');
+            $response = \SapB1\Facades\SapB1::get('BusinessPartners');
+
+            // If we get here without exception, connection is available
+            self::$connectionAvailable = $response->successful();
         } catch (\Throwable $e) {
             // Connection failed
             self::$connectionAvailable = false;
