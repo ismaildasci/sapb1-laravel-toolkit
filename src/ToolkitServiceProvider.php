@@ -11,11 +11,14 @@ use SapB1\Toolkit\Commands\ReportCommand;
 use SapB1\Toolkit\Commands\SyncCommand;
 use SapB1\Toolkit\Commands\TestConnectionCommand;
 use SapB1\Toolkit\Services\ApprovalService;
+use SapB1\Toolkit\Services\AttachmentService;
+use SapB1\Toolkit\Services\BatchService;
 use SapB1\Toolkit\Services\CacheService;
 use SapB1\Toolkit\Services\DocumentFlowService;
 use SapB1\Toolkit\Services\InventoryService;
 use SapB1\Toolkit\Services\PaymentService;
 use SapB1\Toolkit\Services\ReportingService;
+use SapB1\Toolkit\Services\SqlQueryService;
 use SapB1\Toolkit\Services\SyncService;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -58,5 +61,10 @@ class ToolkitServiceProvider extends PackageServiceProvider
         $this->app->singleton(ReportingService::class);
         $this->app->singleton(ApprovalService::class);
         $this->app->singleton(SyncService::class);
+
+        // v2.1.0 - SDK Features Exposure
+        $this->app->singleton(AttachmentService::class);
+        $this->app->singleton(BatchService::class);
+        $this->app->singleton(SqlQueryService::class);
     }
 }
