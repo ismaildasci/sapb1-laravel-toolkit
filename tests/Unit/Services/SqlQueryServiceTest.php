@@ -55,6 +55,11 @@ it('has executeWithDateRange method for reports', function () {
 });
 
 describe('SqlQueryServiceBuilder', function () {
+    // Ensure SqlQueryService file is loaded (SqlQueryServiceBuilder is in the same file)
+    beforeEach(function () {
+        class_exists(SqlQueryService::class);
+    });
+
     it('has param method', function () {
         expect(method_exists(SqlQueryServiceBuilder::class, 'param'))->toBeTrue();
     });

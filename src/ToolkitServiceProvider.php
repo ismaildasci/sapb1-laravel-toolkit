@@ -18,6 +18,7 @@ use SapB1\Toolkit\Services\DocumentFlowService;
 use SapB1\Toolkit\Services\InventoryService;
 use SapB1\Toolkit\Services\PaymentService;
 use SapB1\Toolkit\Services\ReportingService;
+use SapB1\Toolkit\Services\SemanticQueryService;
 use SapB1\Toolkit\Services\SqlQueryService;
 use SapB1\Toolkit\Services\SyncService;
 use Spatie\LaravelPackageTools\Package;
@@ -66,5 +67,8 @@ class ToolkitServiceProvider extends PackageServiceProvider
         $this->app->singleton(AttachmentService::class);
         $this->app->singleton(BatchService::class);
         $this->app->singleton(SqlQueryService::class);
+
+        // v2.2.0 - Semantic Layer / Analytics
+        $this->app->singleton(SemanticQueryService::class);
     }
 }
