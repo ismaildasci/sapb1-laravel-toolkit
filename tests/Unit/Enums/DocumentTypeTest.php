@@ -46,3 +46,62 @@ it('identifies inventory documents', function () {
     expect(DocumentType::InventoryGenEntry->isInventoryDocument())->toBeTrue();
     expect(DocumentType::SalesOrder->isInventoryDocument())->toBeFalse();
 });
+
+// ==================== v2.3.0 - Endpoint and Action Support ====================
+
+it('returns correct Service Layer endpoint names', function () {
+    expect(DocumentType::SalesQuotation->endpoint())->toBe('Quotations');
+    expect(DocumentType::SalesOrder->endpoint())->toBe('Orders');
+    expect(DocumentType::DeliveryNote->endpoint())->toBe('DeliveryNotes');
+    expect(DocumentType::Return->endpoint())->toBe('Returns');
+    expect(DocumentType::ARInvoice->endpoint())->toBe('Invoices');
+    expect(DocumentType::ARCreditNote->endpoint())->toBe('CreditNotes');
+    expect(DocumentType::ARDownPayment->endpoint())->toBe('DownPayments');
+    expect(DocumentType::PurchaseQuotation->endpoint())->toBe('PurchaseQuotations');
+    expect(DocumentType::PurchaseOrder->endpoint())->toBe('PurchaseOrders');
+    expect(DocumentType::GoodsReceiptPO->endpoint())->toBe('PurchaseDeliveryNotes');
+    expect(DocumentType::PurchaseReturn->endpoint())->toBe('PurchaseReturns');
+    expect(DocumentType::APInvoice->endpoint())->toBe('PurchaseInvoices');
+    expect(DocumentType::APCreditNote->endpoint())->toBe('PurchaseCreditNotes');
+    expect(DocumentType::APDownPayment->endpoint())->toBe('PurchaseDownPayments');
+    expect(DocumentType::InventoryGenEntry->endpoint())->toBe('InventoryGenEntries');
+    expect(DocumentType::InventoryGenExit->endpoint())->toBe('InventoryGenExits');
+    expect(DocumentType::StockTransfer->endpoint())->toBe('StockTransfers');
+});
+
+it('identifies documents that support Close action', function () {
+    expect(DocumentType::SalesQuotation->supportsClose())->toBeTrue();
+    expect(DocumentType::SalesOrder->supportsClose())->toBeTrue();
+    expect(DocumentType::PurchaseQuotation->supportsClose())->toBeTrue();
+    expect(DocumentType::PurchaseOrder->supportsClose())->toBeTrue();
+
+    expect(DocumentType::ARInvoice->supportsClose())->toBeFalse();
+    expect(DocumentType::DeliveryNote->supportsClose())->toBeFalse();
+    expect(DocumentType::StockTransfer->supportsClose())->toBeFalse();
+});
+
+it('identifies documents that support Cancel action', function () {
+    expect(DocumentType::DeliveryNote->supportsCancel())->toBeTrue();
+    expect(DocumentType::Return->supportsCancel())->toBeTrue();
+    expect(DocumentType::ARInvoice->supportsCancel())->toBeTrue();
+    expect(DocumentType::ARCreditNote->supportsCancel())->toBeTrue();
+    expect(DocumentType::GoodsReceiptPO->supportsCancel())->toBeTrue();
+    expect(DocumentType::PurchaseReturn->supportsCancel())->toBeTrue();
+    expect(DocumentType::APInvoice->supportsCancel())->toBeTrue();
+    expect(DocumentType::APCreditNote->supportsCancel())->toBeTrue();
+    expect(DocumentType::InventoryGenEntry->supportsCancel())->toBeTrue();
+    expect(DocumentType::InventoryGenExit->supportsCancel())->toBeTrue();
+    expect(DocumentType::StockTransfer->supportsCancel())->toBeTrue();
+
+    expect(DocumentType::SalesOrder->supportsCancel())->toBeFalse();
+    expect(DocumentType::SalesQuotation->supportsCancel())->toBeFalse();
+    expect(DocumentType::PurchaseOrder->supportsCancel())->toBeFalse();
+});
+
+it('can get DocumentType from endpoint name', function () {
+    expect(DocumentType::fromEndpoint('Orders'))->toBe(DocumentType::SalesOrder);
+    expect(DocumentType::fromEndpoint('Invoices'))->toBe(DocumentType::ARInvoice);
+    expect(DocumentType::fromEndpoint('PurchaseOrders'))->toBe(DocumentType::PurchaseOrder);
+    expect(DocumentType::fromEndpoint('StockTransfers'))->toBe(DocumentType::StockTransfer);
+    expect(DocumentType::fromEndpoint('InvalidEndpoint'))->toBeNull();
+});

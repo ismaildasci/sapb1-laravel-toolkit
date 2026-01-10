@@ -36,3 +36,4 @@ testbench.yaml
 # Environment
 .env
 .env.testing
+CLAUDE.md

@@ -14,7 +14,9 @@ use SapB1\Toolkit\Services\ApprovalService;
 use SapB1\Toolkit\Services\AttachmentService;
 use SapB1\Toolkit\Services\BatchService;
 use SapB1\Toolkit\Services\CacheService;
+use SapB1\Toolkit\Services\DocumentActionService;
 use SapB1\Toolkit\Services\DocumentFlowService;
+use SapB1\Toolkit\Services\DraftService;
 use SapB1\Toolkit\Services\InventoryService;
 use SapB1\Toolkit\Services\PaymentService;
 use SapB1\Toolkit\Services\ReportingService;
@@ -70,5 +72,9 @@ class ToolkitServiceProvider extends PackageServiceProvider
 
         // v2.2.0 - Semantic Layer / Analytics
         $this->app->singleton(SemanticQueryService::class);
+
+        // v2.3.0 - Advanced Document Operations
+        $this->app->singleton(DocumentActionService::class);
+        $this->app->singleton(DraftService::class);
     }
 }

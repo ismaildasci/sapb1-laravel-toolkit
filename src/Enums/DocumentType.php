@@ -81,4 +81,77 @@ enum DocumentType: int
             self::StockTransfer,
         ], true);
     }
+
+    /**
+     * Get the Service Layer endpoint name for this document type.
+     */
+    public function endpoint(): string
+    {
+        return match ($this) {
+            self::SalesQuotation => 'Quotations',
+            self::SalesOrder => 'Orders',
+            self::DeliveryNote => 'DeliveryNotes',
+            self::Return => 'Returns',
+            self::ARInvoice => 'Invoices',
+            self::ARCreditNote => 'CreditNotes',
+            self::ARDownPayment => 'DownPayments',
+            self::PurchaseQuotation => 'PurchaseQuotations',
+            self::PurchaseOrder => 'PurchaseOrders',
+            self::GoodsReceiptPO => 'PurchaseDeliveryNotes',
+            self::PurchaseReturn => 'PurchaseReturns',
+            self::APInvoice => 'PurchaseInvoices',
+            self::APCreditNote => 'PurchaseCreditNotes',
+            self::APDownPayment => 'PurchaseDownPayments',
+            self::InventoryGenEntry => 'InventoryGenEntries',
+            self::InventoryGenExit => 'InventoryGenExits',
+            self::StockTransfer => 'StockTransfers',
+        };
+    }
+
+    /**
+     * Check if this document type supports Close action.
+     */
+    public function supportsClose(): bool
+    {
+        return in_array($this, [
+            self::SalesQuotation,
+            self::SalesOrder,
+            self::PurchaseQuotation,
+            self::PurchaseOrder,
+        ], true);
+    }
+
+    /**
+     * Check if this document type supports Cancel action.
+     */
+    public function supportsCancel(): bool
+    {
+        return in_array($this, [
+            self::DeliveryNote,
+            self::Return,
+            self::ARInvoice,
+            self::ARCreditNote,
+            self::GoodsReceiptPO,
+            self::PurchaseReturn,
+            self::APInvoice,
+            self::APCreditNote,
+            self::InventoryGenEntry,
+            self::InventoryGenExit,
+            self::StockTransfer,
+        ], true);
+    }
+
+    /**
+     * Get DocumentType from endpoint name.
+     */
+    public static function fromEndpoint(string $endpoint): ?self
+    {
+        foreach (self::cases() as $case) {
+            if ($case->endpoint() === $endpoint) {
+                return $case;
+            }
+        }
+
+        return null;
+    }
 }
