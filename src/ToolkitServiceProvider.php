@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace SapB1\Toolkit;
 
+use SapB1\Toolkit\ChangeTracking\ChangeTrackingService;
 use SapB1\Toolkit\Commands\CacheCommand;
 use SapB1\Toolkit\Commands\GenerateCommand;
 use SapB1\Toolkit\Commands\InstallCommand;
 use SapB1\Toolkit\Commands\ReportCommand;
 use SapB1\Toolkit\Commands\SyncCommand;
 use SapB1\Toolkit\Commands\TestConnectionCommand;
+use SapB1\Toolkit\Commands\WatchCommand;
 use SapB1\Toolkit\Services\ApprovalService;
 use SapB1\Toolkit\Services\AttachmentService;
 use SapB1\Toolkit\Services\BatchService;
@@ -42,6 +44,7 @@ class ToolkitServiceProvider extends PackageServiceProvider
                 SyncCommand::class,
                 CacheCommand::class,
                 ReportCommand::class,
+                WatchCommand::class,
             ]);
     }
 
@@ -80,5 +83,8 @@ class ToolkitServiceProvider extends PackageServiceProvider
 
         // v2.4.0 - User Defined Fields
         $this->app->singleton(UdfService::class);
+
+        // v2.6.0 - Change Tracking
+        $this->app->singleton(ChangeTrackingService::class);
     }
 }
