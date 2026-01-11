@@ -6,6 +6,8 @@ namespace SapB1\Toolkit\Models;
 
 use InvalidArgumentException;
 use SapB1\Facades\SapB1;
+use SapB1\Toolkit\Cache\CacheManager;
+use SapB1\Toolkit\Cache\CacheResolver;
 use SapB1\Toolkit\Exceptions\ModelNotFoundException;
 
 /**
@@ -62,6 +64,11 @@ class QueryBuilder
     protected array $with = [];
 
     /**
+     * Cache resolver for this query.
+     */
+    protected CacheResolver $cacheResolver;
+
+    /**
      * Valid field name pattern for OData queries.
      * Allows alphanumeric characters, underscores, and dots (for nested properties).
      */
@@ -92,6 +99,53 @@ class QueryBuilder
     public function __construct(SapB1Model $model)
     {
         $this->model = $model;
+        $this->initializeCacheResolver();
+    }
+
+    /**
+     * Initialize the cache resolver with model settings.
+     */
+    protected function initializeCacheResolver(): void
+    {
+        $this->cacheResolver = new CacheResolver($this->model::getEntity());
+
+        // Check if model has HasCache trait and get model-level setting
+        $modelClass = get_class($this->model);
+        if (method_exists($modelClass, 'isCacheEnabled')) {
+            /** @var callable(): ?bool $cacheEnabledCallback */
+            $cacheEnabledCallback = [$modelClass, 'isCacheEnabled'];
+            $this->cacheResolver->setModelEnabled($cacheEnabledCallback());
+        }
+    }
+
+    /**
+     * Enable caching for this query with optional TTL.
+     *
+     * @param  int|null  $ttl  Cache TTL in seconds (null = use default)
+     */
+    public function cache(?int $ttl = null): static
+    {
+        $this->cacheResolver->enableForQuery($ttl);
+
+        return $this;
+    }
+
+    /**
+     * Disable caching for this query.
+     */
+    public function noCache(): static
+    {
+        $this->cacheResolver->disableForQuery();
+
+        return $this;
+    }
+
+    /**
+     * Get the cache resolver.
+     */
+    public function getCacheResolver(): CacheResolver
+    {
+        return $this->cacheResolver;
     }
 
     /**
@@ -390,6 +444,24 @@ class QueryBuilder
      */
     public function find(int|string $id): ?SapB1Model
     {
+        // Check if caching should be used
+        if ($this->cacheResolver->shouldCache()) {
+            $cacheManager = new CacheManager($this->cacheResolver);
+            $cacheKey = CacheManager::generateRecordKey($this->model::getEntity(), $id);
+
+            return $cacheManager->remember($cacheKey, function () use ($id): ?SapB1Model {
+                return $this->findFromApi($id);
+            });
+        }
+
+        return $this->findFromApi($id);
+    }
+
+    /**
+     * Find a model from the API without caching.
+     */
+    protected function findFromApi(int|string $id): ?SapB1Model
+    {
         try {
             $client = $this->getClient();
             $response = $client->service($this->model::getEntity())->find($id);
@@ -471,6 +543,26 @@ class QueryBuilder
      */
     protected function execute(): array
     {
+        // Check if caching should be used
+        if ($this->cacheResolver->shouldCache()) {
+            $cacheManager = new CacheManager($this->cacheResolver);
+            $cacheKey = $this->generateQueryCacheKey();
+
+            return $cacheManager->remember($cacheKey, function (): array {
+                return $this->executeFromApi();
+            });
+        }
+
+        return $this->executeFromApi();
+    }
+
+    /**
+     * Execute the query directly from API without caching.
+     *
+     * @return array<string, mixed>
+     */
+    protected function executeFromApi(): array
+    {
         $client = $this->getClient();
         $builder = $client->service($this->model::getEntity())->queryBuilder();
 
@@ -500,6 +592,23 @@ class QueryBuilder
         }
 
         return $builder->get();
+    }
+
+    /**
+     * Generate a unique cache key for the current query.
+     */
+    protected function generateQueryCacheKey(): string
+    {
+        $params = [
+            'wheres' => $this->wheres,
+            'rawFilter' => $this->rawFilter,
+            'orderBy' => $this->orderBy,
+            'limit' => $this->limit,
+            'offset' => $this->offset,
+            'select' => $this->select,
+        ];
+
+        return CacheManager::generateQueryKey($this->model::getEntity(), $params);
     }
 
     /**

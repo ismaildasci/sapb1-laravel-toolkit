@@ -169,6 +169,24 @@ trait HasQueryBuilder
     }
 
     /**
+     * Enable caching for the query with optional TTL.
+     *
+     * @param  int|null  $ttl  Cache TTL in seconds (null = use default)
+     */
+    public static function cache(?int $ttl = null): QueryBuilder
+    {
+        return static::query()->cache($ttl);
+    }
+
+    /**
+     * Disable caching for the query.
+     */
+    public static function noCache(): QueryBuilder
+    {
+        return static::query()->noCache();
+    }
+
+    /**
      * Paginate results.
      *
      * @return Paginator<SapB1Model>
