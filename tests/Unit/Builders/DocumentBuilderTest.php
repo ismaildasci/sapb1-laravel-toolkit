@@ -201,3 +201,68 @@ it('excludes null values from build', function () {
     expect($data)->not->toHaveKey('Comments');
     expect($data)->not->toHaveKey('DocDate');
 });
+
+// ==================== UDF SUPPORT ====================
+
+it('sets single UDF without prefix', function () {
+    $data = OrderBuilder::create()
+        ->udf('CustomField', 'test value')
+        ->build();
+
+    expect($data['U_CustomField'])->toBe('test value');
+});
+
+it('sets single UDF with prefix', function () {
+    $data = OrderBuilder::create()
+        ->udf('U_CustomField', 'test value')
+        ->build();
+
+    expect($data['U_CustomField'])->toBe('test value');
+});
+
+it('sets multiple UDFs at once', function () {
+    $data = OrderBuilder::create()
+        ->udfs([
+            'CustomField' => 'value1',
+            'AnotherField' => 123,
+            'DateField' => '2024-01-15',
+        ])
+        ->build();
+
+    expect($data['U_CustomField'])->toBe('value1');
+    expect($data['U_AnotherField'])->toBe(123);
+    expect($data['U_DateField'])->toBe('2024-01-15');
+});
+
+it('gets UDF value from builder', function () {
+    $builder = OrderBuilder::create()
+        ->udf('CustomField', 'test value');
+
+    expect($builder->getUdf('CustomField'))->toBe('test value');
+    expect($builder->getUdf('U_CustomField'))->toBe('test value');
+});
+
+it('checks if UDF is set in builder', function () {
+    $builder = OrderBuilder::create()
+        ->udf('CustomField', 'test value');
+
+    expect($builder->hasUdf('CustomField'))->toBeTrue();
+    expect($builder->hasUdf('U_CustomField'))->toBeTrue();
+    expect($builder->hasUdf('NonExistent'))->toBeFalse();
+});
+
+it('chains UDF methods with other methods', function () {
+    $data = OrderBuilder::create()
+        ->cardCode('C001')
+        ->docDate('2024-01-15')
+        ->udf('CustomField', 'custom value')
+        ->udf('Priority', 'High')
+        ->addLine(['ItemCode' => 'ITEM001', 'Quantity' => 1])
+        ->build();
+
+    expect($data['CardCode'])->toBe('C001');
+    expect($data['DocDate'])->toBe('2024-01-15');
+    expect($data['U_CustomField'])->toBe('custom value');
+    expect($data['U_Priority'])->toBe('High');
+    expect($data['DocumentLines'])->toHaveCount(1);
+});

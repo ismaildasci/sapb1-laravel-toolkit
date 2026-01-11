@@ -23,6 +23,7 @@ use SapB1\Toolkit\Services\ReportingService;
 use SapB1\Toolkit\Services\SemanticQueryService;
 use SapB1\Toolkit\Services\SqlQueryService;
 use SapB1\Toolkit\Services\SyncService;
+use SapB1\Toolkit\Services\UdfService;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -76,5 +77,8 @@ class ToolkitServiceProvider extends PackageServiceProvider
         // v2.3.0 - Advanced Document Operations
         $this->app->singleton(DocumentActionService::class);
         $this->app->singleton(DraftService::class);
+
+        // v2.4.0 - User Defined Fields
+        $this->app->singleton(UdfService::class);
     }
 }
