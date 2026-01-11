@@ -15,7 +15,7 @@ it('can be instantiated with entity', function () {
 });
 
 it('can be instantiated without entity', function () {
-    $resolver = new CacheResolver();
+    $resolver = new CacheResolver;
 
     expect($resolver)->toBeInstanceOf(CacheResolver::class);
 });
@@ -161,7 +161,7 @@ it('returns tags including entity', function () {
 it('returns tags without entity when empty', function () {
     config(['laravel-toolkit.cache.prefix' => 'sapb1_']);
 
-    $resolver = new CacheResolver();
+    $resolver = new CacheResolver;
     $tags = $resolver->getTags();
 
     expect($tags)->toBe(['sapb1_all']);
@@ -170,7 +170,7 @@ it('returns tags without entity when empty', function () {
 // ==================== UTILITY TESTS ====================
 
 it('can set entity', function () {
-    $resolver = new CacheResolver();
+    $resolver = new CacheResolver;
     $resolver->setEntity('BusinessPartners');
 
     $state = $resolver->getState();
@@ -212,7 +212,7 @@ it('returns state for debugging', function () {
 it('checks if entity config exists', function () {
     config(['laravel-toolkit.cache.entities.Items.enabled' => true]);
 
-    $resolver = new CacheResolver();
+    $resolver = new CacheResolver;
 
     expect($resolver->hasEntityConfig('Items'))->toBeTrue();
     expect($resolver->hasEntityConfig('NonExistent'))->toBeFalse();
