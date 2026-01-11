@@ -172,6 +172,6 @@ abstract class BaseBuilder implements BuilderInterface
             return $name;
         }
 
-        return 'U_' . $name;
+        return 'U_'.$name;
     }
 }

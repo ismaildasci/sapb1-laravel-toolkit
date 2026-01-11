@@ -241,7 +241,7 @@ trait HasUdf
             return $name;
         }
 
-        return $prefix . $name;
+        return $prefix.$name;
     }
 
     /**
