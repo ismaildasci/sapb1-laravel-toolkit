@@ -1,0 +1,60 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('sap_business_partners', function (Blueprint $table) {
+            // Primary Key
+            $table->string('CardCode', 15)->primary();
+
+            // Core Fields
+            $table->string('CardName', 100)->nullable();
+            $table->string('CardType', 1)->nullable();
+            $table->integer('GroupCode')->nullable();
+
+            // Contact Info
+            $table->string('Phone1', 20)->nullable();
+            $table->string('Phone2', 20)->nullable();
+            $table->string('Fax', 20)->nullable();
+            $table->string('EmailAddress', 100)->nullable();
+            $table->string('ContactPerson', 100)->nullable();
+
+            // Financial
+            $table->string('Currency', 3)->nullable();
+            $table->decimal('Balance', 19, 6)->default(0);
+            $table->decimal('OrdersBalance', 19, 6)->default(0);
+            $table->decimal('DeliveryNotesBalance', 19, 6)->default(0);
+
+            // Status
+            $table->string('Valid', 1)->default('Y');
+            $table->string('Frozen', 1)->default('N');
+
+            // Sync Tracking
+            $table->timestamp('sap_updated_at')->nullable()->index();
+            $table->timestamp('synced_at')->nullable();
+            $table->softDeletes();
+            $table->timestamps();
+
+            // Indexes
+            $table->index('CardType');
+            $table->index('GroupCode');
+            $table->index(['Valid', 'Frozen']);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('sap_business_partners');
+    }
+};

@@ -1,0 +1,59 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('sap_items', function (Blueprint $table) {
+            // Primary Key
+            $table->string('ItemCode', 50)->primary();
+
+            // Core Fields
+            $table->string('ItemName', 100)->nullable();
+            $table->string('ItemType', 20)->nullable();
+            $table->integer('ItemsGroupCode')->nullable();
+
+            // Inventory
+            $table->decimal('QuantityOnStock', 19, 6)->default(0);
+            $table->decimal('QuantityOrderedFromVendors', 19, 6)->default(0);
+            $table->decimal('QuantityOrderedByCustomers', 19, 6)->default(0);
+
+            // Pricing
+            $table->decimal('AvgStdPrice', 19, 6)->default(0);
+            $table->string('DefaultWarehouse', 8)->nullable();
+
+            // Status
+            $table->string('SalesItem', 1)->default('Y');
+            $table->string('PurchaseItem', 1)->default('Y');
+            $table->string('InventoryItem', 1)->default('Y');
+            $table->string('Valid', 1)->default('Y');
+            $table->string('Frozen', 1)->default('N');
+
+            // Sync Tracking
+            $table->timestamp('sap_updated_at')->nullable()->index();
+            $table->timestamp('synced_at')->nullable();
+            $table->softDeletes();
+            $table->timestamps();
+
+            // Indexes
+            $table->index('ItemType');
+            $table->index('ItemsGroupCode');
+            $table->index(['Valid', 'Frozen']);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('sap_items');
+    }
+};

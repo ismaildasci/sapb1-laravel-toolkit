@@ -1,0 +1,82 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        // Header Table
+        Schema::create('sap_purchase_invoices', function (Blueprint $table) {
+            $table->unsignedBigInteger('DocEntry')->primary();
+            $table->unsignedInteger('DocNum')->nullable();
+
+            // Partner (Vendor)
+            $table->string('CardCode', 15)->nullable()->index();
+            $table->string('CardName', 100)->nullable();
+
+            // Dates
+            $table->date('DocDate')->nullable()->index();
+            $table->date('DocDueDate')->nullable();
+            $table->date('TaxDate')->nullable();
+
+            // Amounts
+            $table->decimal('DocTotal', 19, 6)->default(0);
+            $table->decimal('VatSum', 19, 6)->default(0);
+            $table->decimal('DiscountPercent', 19, 6)->default(0);
+            $table->string('DocCurrency', 3)->nullable();
+
+            // Status
+            $table->string('DocStatus', 1)->nullable()->index();
+            $table->string('Cancelled', 1)->default('N');
+
+            // References
+            $table->string('NumAtCard', 50)->nullable();
+            $table->text('Comments')->nullable();
+
+            // Sync Tracking
+            $table->timestamp('sap_updated_at')->nullable()->index();
+            $table->timestamp('synced_at')->nullable();
+            $table->softDeletes();
+            $table->timestamps();
+        });
+
+        // Lines Table
+        Schema::create('sap_purchase_invoice_lines', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('DocEntry')->index();
+            $table->unsignedInteger('LineNum');
+
+            $table->string('ItemCode', 50)->nullable()->index();
+            $table->string('ItemDescription', 200)->nullable();
+            $table->decimal('Quantity', 19, 6)->default(0);
+            $table->decimal('Price', 19, 6)->default(0);
+            $table->decimal('LineTotal', 19, 6)->default(0);
+            $table->string('WarehouseCode', 8)->nullable();
+            $table->string('LineStatus', 1)->nullable();
+
+            $table->timestamps();
+
+            $table->foreign('DocEntry')
+                ->references('DocEntry')
+                ->on('sap_purchase_invoices')
+                ->onDelete('cascade');
+
+            $table->unique(['DocEntry', 'LineNum']);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('sap_purchase_invoice_lines');
+        Schema::dropIfExists('sap_purchase_invoices');
+    }
+};

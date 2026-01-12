@@ -10,6 +10,8 @@ use SapB1\Toolkit\Commands\GenerateCommand;
 use SapB1\Toolkit\Commands\InstallCommand;
 use SapB1\Toolkit\Commands\ReportCommand;
 use SapB1\Toolkit\Commands\SyncCommand;
+use SapB1\Toolkit\Commands\SyncSetupCommand;
+use SapB1\Toolkit\Commands\SyncStatusCommand;
 use SapB1\Toolkit\Commands\TestConnectionCommand;
 use SapB1\Toolkit\Commands\WatchCommand;
 use SapB1\Toolkit\Services\ApprovalService;
@@ -26,6 +28,8 @@ use SapB1\Toolkit\Services\SemanticQueryService;
 use SapB1\Toolkit\Services\SqlQueryService;
 use SapB1\Toolkit\Services\SyncService;
 use SapB1\Toolkit\Services\UdfService;
+use SapB1\Toolkit\Sync\LocalSyncService;
+use SapB1\Toolkit\Sync\SyncRegistry;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -42,6 +46,8 @@ class ToolkitServiceProvider extends PackageServiceProvider
                 GenerateCommand::class,
                 TestConnectionCommand::class,
                 SyncCommand::class,
+                SyncSetupCommand::class,
+                SyncStatusCommand::class,
                 CacheCommand::class,
                 ReportCommand::class,
                 WatchCommand::class,
@@ -86,5 +92,11 @@ class ToolkitServiceProvider extends PackageServiceProvider
 
         // v2.6.0 - Change Tracking
         $this->app->singleton(ChangeTrackingService::class);
+
+        // v2.7.0 - Local Database Sync
+        $this->app->singleton(SyncRegistry::class);
+        $this->app->singleton(LocalSyncService::class, function ($app) {
+            return new LocalSyncService($app->make(SyncRegistry::class));
+        });
     }
 }

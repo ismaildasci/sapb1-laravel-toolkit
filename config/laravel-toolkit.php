@@ -90,4 +90,64 @@ return [
             // ],
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Local Database Sync (v2.7.0)
+    |--------------------------------------------------------------------------
+    |
+    | Configure synchronization of SAP B1 data to local database.
+    | This feature is OPT-IN: run 'php artisan sapb1:sync-setup' to create
+    | migrations for the entities you want to sync.
+    |
+    | Available entities:
+    | - Master Data: Items, BusinessPartners
+    | - Sales: Orders, Invoices, DeliveryNotes, Quotations, CreditNotes
+    | - Purchase: PurchaseOrders, PurchaseInvoices, GoodsReceiptPO
+    |
+    */
+    'sync' => [
+        // Global sync switch (default: enabled when tables exist)
+        'enabled' => env('SAPB1_TOOLKIT_SYNC_ENABLED', true),
+
+        // Default batch size for sync operations
+        'batch_size' => env('SAPB1_TOOLKIT_SYNC_BATCH_SIZE', 5000),
+
+        // Table name prefix for synced entities
+        'table_prefix' => 'sap_',
+
+        // Track soft deletes (detect deleted records in SAP)
+        'track_deletes' => env('SAPB1_TOOLKIT_SYNC_TRACK_DELETES', true),
+
+        /*
+        |--------------------------------------------------------------------------
+        | Entity-Specific Sync Settings
+        |--------------------------------------------------------------------------
+        |
+        | Configure sync per entity. If not specified, defaults are used.
+        |
+        | Example:
+        | 'entities' => [
+        |     'Items' => [
+        |         'enabled' => true,
+        |         'batch_size' => 10000,
+        |         'track_deletes' => true,
+        |     ],
+        |     'Orders' => [
+        |         'enabled' => true,
+        |         'sync_lines' => true,
+        |     ],
+        | ],
+        |
+        */
+        'entities' => [
+            // 'Items' => [
+            //     'enabled' => true,
+            //     'batch_size' => 10000,
+            // ],
+            // 'BusinessPartners' => [
+            //     'enabled' => true,
+            // ],
+        ],
+    ],
 ];
