@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Schema;
 use SapB1\Facades\SapB1;
 use SapB1\Toolkit\Sync\Events\SyncCompleted;
 use SapB1\Toolkit\Sync\Events\SyncFailed;
-use SapB1\Toolkit\Sync\Events\SyncProgress;
 use SapB1\Toolkit\Sync\Events\SyncStarted;
 use SapB1\Toolkit\Sync\Exceptions\SyncException;
 
