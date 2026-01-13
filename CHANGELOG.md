@@ -2,6 +2,219 @@
 
 All notable changes to `laravel-sapb1-toolkit` will be documented in this file.
 
+## v2.8.0 - 2026-01-13
+
+### Added
+
+#### Observability & Async Support
+
+**Sync Events (4 events)**
+- `SyncStarted` - Dispatched when sync begins (entity, syncType, since)
+- `SyncCompleted` - Dispatched on success (entity, SyncResult)
+- `SyncFailed` - Dispatched on failure (entity, error, exception)
+- `SyncProgress` - Progress reporting (processed, total, percentage)
+
+**Queue Integration**
+- `SyncEntityJob` - Queueable job for async sync operations
+  - Auto-retry (3 attempts, 60s backoff)
+  - Job tags for monitoring (sync, entity:*, full-sync/incremental-sync)
+  - Support for full sync, incremental sync, and since-date sync
+
+**Logging**
+- Comprehensive logging in `LocalSyncService`
+- Start/complete/fail logging with context
+- Debug logging for delete detection
+
+**Config Updates**
+- `sync.dispatch_events` - Enable/disable event dispatching
+- `sync.queue.*` - Queue configuration (connection, queue, tries, backoff)
+
+### Usage
+
+```php
+// Async sync with queue
+use SapB1\Toolkit\Jobs\SyncEntityJob;
+
+SyncEntityJob::dispatch('Items');                    // Incremental
+SyncEntityJob::dispatch('Items', fullSync: true);   // Full sync
+SyncEntityJob::dispatch('Orders', since: '2026-01-01');
+
+// Queue to specific queue
+SyncEntityJob::dispatch('Items')->onQueue('sync');
+
+// Listen to events
+Event::listen(SyncCompleted::class, function ($event) {
+    Log::info("Synced {$event->entity}: {$event->total()} records");
+});
+
+// Disable events
+$syncService->withoutEvents()->sync('Items');
+```
+
+---
+
+## v2.7.0 - 2026-01-12
+
+### Added
+
+#### Sync & Local Database
+- `LocalSyncService` - SAP'tan local DB'ye sync orchestrator
+- `SyncRegistry` - Entity configuration management
+- `SyncConfig` - Predefined configs for 10 entities
+- `SyncMetadata` Eloquent model - Sync state tracking
+- `SyncResult` value object - Operation results
+- `SyncException` - Error handling
+
+#### Commands
+- `sapb1:sync-setup` - Migration generator for sync tables
+- `sapb1:sync-status` - Status monitoring command
+- Updated `sapb1:sync` - Local DB sync support
+
+#### Migration Stubs (11)
+- `metadata.stub` - Sync metadata table
+- `items.stub`, `business_partners.stub` - Master data
+- `orders.stub`, `invoices.stub`, `delivery_notes.stub`, `quotations.stub`, `credit_notes.stub` - Sales
+- `purchase_orders.stub`, `purchase_invoices.stub`, `goods_receipt_po.stub` - Purchase
+
+### Usage
+
+```php
+// Setup migrations (one-time)
+// php artisan sapb1:sync-setup Items BusinessPartners Orders
+
+// Incremental sync
+$result = $syncService->sync('Items');
+// SyncResult { created: 10, updated: 140, deleted: 0, duration: 1.23s }
+
+// Full sync with delete detection
+$result = $syncService->fullSyncWithDeletes('Items');
+
+// Artisan commands
+// php artisan sapb1:sync Items --full
+// php artisan sapb1:sync-status
+```
+
+---
+
+## v2.6.0 - 2026-01-11
+
+### Added
+
+#### Change Tracking / Event Detection
+- `ChangeTracker` - Polling-based change detection engine
+- `WatcherConfig` - Fluent entity watch configuration
+- `Change` value object - Represents detected changes
+- `ChangeType` enum - Created, Updated, Deleted
+- `StateStore` interface and `CacheStateStore` implementation
+- `ChangesDetected` and `EntityChangeDetected` events
+- `ChangeTrackingService` - Multi-entity orchestrator
+- `sapb1:watch` Artisan command - CLI-based watching
+
+### Usage
+
+```php
+$tracker = ChangeTracker::for('Orders')
+    ->primaryKey('DocEntry')
+    ->detectCreated(true)
+    ->detectUpdated(true);
+
+$changes = $tracker->poll();
+
+// php artisan sapb1:watch Orders --interval=30
+```
+
+---
+
+## v2.5.0 - 2026-01-11
+
+### Added
+
+#### Local Cache System
+- `CacheResolver` - 5-level priority cache decision system
+- `CacheManager` - Laravel Cache integration with tags
+- `HasCache` trait for Models
+- `QueryBuilder::cache()` and `noCache()` methods
+- Entity-level cache configuration
+- `CacheException` for error handling
+
+### Priority Order
+1. Query-level → `Item::cache(600)->find($id)`
+2. Model-level → `protected static bool $cacheEnabled = true`
+3. Entity config → `config('laravel-toolkit.cache.entities.Items.enabled')`
+4. Global config → `config('laravel-toolkit.cache.enabled')` (default: false)
+
+---
+
+## v2.4.0 - 2026-01-11
+
+### Added
+
+#### UDF (User Defined Fields) Support
+- `UdfService` - UserFieldsMD endpoint (read-only)
+- Entity-to-Table mapping (40+ entities: Orders→ORDR, etc.)
+- `HasUdf` trait for Models (getUdf, setUdf, getUdfs)
+- Builder `udf()` method support
+- `UdfException` for error handling
+
+### Usage
+
+```php
+$order = Order::find(123);
+$value = $order->getUdf('CustomField');
+$order->setUdf('CustomField', 'value');
+$order->save();
+```
+
+---
+
+## v2.3.0 - 2026-01-08
+
+### Added
+
+#### Advanced Document Operations
+- `DocumentActionService` - Close, Cancel, Reopen actions
+- `DraftService` - Drafts endpoint management
+- `DocumentType` enum enhancements
+- Bulk operations with BatchRequest
+- `DocumentActionException` and `DraftException`
+
+### Usage
+
+```php
+$actionService->closeOrder(123);
+$actionService->cancelInvoice(456);
+$results = $actionService->closeOrders([123, 124, 125]);
+
+$draft = $draftService->createOrderDraft($data);
+$document = $draftService->saveAsDocument($draftEntry);
+```
+
+---
+
+## v2.2.0 - 2026-01-08
+
+### Added
+
+#### Semantic Layer / Analytics
+- `SemanticQueryService` - sml.svc endpoint wrapper
+- `SemanticQueryServiceBuilder` - Fluent query builder
+- Dimensions, measures, filters support
+- Laravel Collection integration
+
+---
+
+## v2.1.0 - 2026-01-08
+
+### Added
+
+#### SDK Features Exposure
+- `AttachmentService` - Attachments2 endpoint wrapper
+- `BatchService` - $batch endpoint wrapper
+- `SqlQueryService` - SQLQueries endpoint wrapper
+- `HasAttachments` trait for Models
+
+---
+
 ## v2.0.0 - 2026-01-03
 
 ### Added

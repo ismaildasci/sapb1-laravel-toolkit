@@ -7,8 +7,13 @@ namespace SapB1\Toolkit\Sync;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use SapB1\Facades\SapB1;
+use SapB1\Toolkit\Sync\Events\SyncCompleted;
+use SapB1\Toolkit\Sync\Events\SyncFailed;
+use SapB1\Toolkit\Sync\Events\SyncProgress;
+use SapB1\Toolkit\Sync\Events\SyncStarted;
 use SapB1\Toolkit\Sync\Exceptions\SyncException;
 
 /**
@@ -22,11 +27,34 @@ final class LocalSyncService
     private string $connection = 'default';
 
     /**
+     * Whether to dispatch events.
+     */
+    private bool $dispatchEvents = true;
+
+    /**
      * Create a new LocalSyncService instance.
      */
     public function __construct(
         private readonly SyncRegistry $registry,
     ) {}
+
+    /**
+     * Enable or disable event dispatching.
+     */
+    public function dispatchEvents(bool $dispatch = true): self
+    {
+        $this->dispatchEvents = $dispatch;
+
+        return $this;
+    }
+
+    /**
+     * Disable event dispatching.
+     */
+    public function withoutEvents(): self
+    {
+        return $this->dispatchEvents(false);
+    }
 
     /**
      * Set the SAP B1 connection.
@@ -50,8 +78,16 @@ final class LocalSyncService
 
         // Check if already running
         if ($metadata->status === SyncMetadata::STATUS_RUNNING) {
+            Log::warning("[LocalSyncService] Sync already running for {$entity}");
+
             return SyncResult::failed($entity, 'Sync is already running for this entity');
         }
+
+        // Determine sync type
+        $syncType = $metadata->hasBeenSynced() ? 'incremental' : 'full';
+
+        Log::info("[LocalSyncService] Starting {$syncType} sync for {$entity}");
+        $this->dispatchEvent(new SyncStarted($entity, $syncType));
 
         $metadata->markAsRunning();
         $startTime = microtime(true);
@@ -65,7 +101,7 @@ final class LocalSyncService
             }
 
             $duration = microtime(true) - $startTime;
-            $result = new SyncResult(
+            $syncResult = new SyncResult(
                 entity: $entity,
                 created: $result['created'],
                 updated: $result['updated'],
@@ -73,13 +109,27 @@ final class LocalSyncService
                 duration: $duration,
             );
 
-            $metadata->markAsCompleted($result);
+            $metadata->markAsCompleted($syncResult);
 
-            return $result;
+            Log::info("[LocalSyncService] Sync completed for {$entity}", [
+                'created' => $syncResult->created,
+                'updated' => $syncResult->updated,
+                'duration' => round($duration, 2),
+            ]);
+            $this->dispatchEvent(new SyncCompleted($entity, $syncResult));
+
+            return $syncResult;
         } catch (\Throwable $e) {
+            $duration = microtime(true) - $startTime;
             $metadata->markAsFailed($e->getMessage());
 
-            return SyncResult::failed($entity, $e->getMessage(), microtime(true) - $startTime);
+            Log::error("[LocalSyncService] Sync failed for {$entity}", [
+                'error' => $e->getMessage(),
+                'duration' => round($duration, 2),
+            ]);
+            $this->dispatchEvent(new SyncFailed($entity, $e->getMessage(), $duration, $e));
+
+            return SyncResult::failed($entity, $e->getMessage(), $duration);
         }
     }
 
@@ -94,8 +144,13 @@ final class LocalSyncService
         $metadata = SyncMetadata::findOrCreateFor($entity);
 
         if ($metadata->status === SyncMetadata::STATUS_RUNNING) {
+            Log::warning("[LocalSyncService] Sync already running for {$entity}");
+
             return SyncResult::failed($entity, 'Sync is already running for this entity');
         }
+
+        Log::info("[LocalSyncService] Starting full sync with deletes for {$entity}");
+        $this->dispatchEvent(new SyncStarted($entity, 'full', null));
 
         $metadata->markAsRunning();
         $startTime = microtime(true);
@@ -107,6 +162,7 @@ final class LocalSyncService
             // Delete detection
             $deleted = 0;
             if ($config->trackDeletes) {
+                Log::debug("[LocalSyncService] Running delete detection for {$entity}");
                 $deleted = $this->detectAndMarkDeleted($config);
             }
 
@@ -121,11 +177,26 @@ final class LocalSyncService
 
             $metadata->markAsCompleted($syncResult);
 
+            Log::info("[LocalSyncService] Full sync completed for {$entity}", [
+                'created' => $syncResult->created,
+                'updated' => $syncResult->updated,
+                'deleted' => $syncResult->deleted,
+                'duration' => round($duration, 2),
+            ]);
+            $this->dispatchEvent(new SyncCompleted($entity, $syncResult));
+
             return $syncResult;
         } catch (\Throwable $e) {
+            $duration = microtime(true) - $startTime;
             $metadata->markAsFailed($e->getMessage());
 
-            return SyncResult::failed($entity, $e->getMessage(), microtime(true) - $startTime);
+            Log::error("[LocalSyncService] Full sync failed for {$entity}", [
+                'error' => $e->getMessage(),
+                'duration' => round($duration, 2),
+            ]);
+            $this->dispatchEvent(new SyncFailed($entity, $e->getMessage(), $duration, $e));
+
+            return SyncResult::failed($entity, $e->getMessage(), $duration);
         }
     }
 
@@ -165,6 +236,10 @@ final class LocalSyncService
         $this->validateTable($config);
 
         $metadata = SyncMetadata::findOrCreateFor($entity);
+
+        Log::info("[LocalSyncService] Starting sync since {$sinceDate} for {$entity}");
+        $this->dispatchEvent(new SyncStarted($entity, 'incremental', $sinceDate));
+
         $metadata->markAsRunning();
         $startTime = microtime(true);
 
@@ -181,11 +256,27 @@ final class LocalSyncService
 
             $metadata->markAsCompleted($syncResult);
 
+            Log::info("[LocalSyncService] Sync since completed for {$entity}", [
+                'created' => $syncResult->created,
+                'updated' => $syncResult->updated,
+                'since' => $sinceDate,
+                'duration' => round($duration, 2),
+            ]);
+            $this->dispatchEvent(new SyncCompleted($entity, $syncResult));
+
             return $syncResult;
         } catch (\Throwable $e) {
+            $duration = microtime(true) - $startTime;
             $metadata->markAsFailed($e->getMessage());
 
-            return SyncResult::failed($entity, $e->getMessage(), microtime(true) - $startTime);
+            Log::error("[LocalSyncService] Sync since failed for {$entity}", [
+                'error' => $e->getMessage(),
+                'since' => $sinceDate,
+                'duration' => round($duration, 2),
+            ]);
+            $this->dispatchEvent(new SyncFailed($entity, $e->getMessage(), $duration, $e));
+
+            return SyncResult::failed($entity, $e->getMessage(), $duration);
         }
     }
 
@@ -541,5 +632,15 @@ final class LocalSyncService
     private function client()
     {
         return SapB1::connection($this->connection);
+    }
+
+    /**
+     * Dispatch an event if event dispatching is enabled.
+     */
+    private function dispatchEvent(object $event): void
+    {
+        if ($this->dispatchEvents) {
+            event($event);
+        }
     }
 }

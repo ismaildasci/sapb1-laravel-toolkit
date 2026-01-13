@@ -228,7 +228,10 @@ final class UdfService extends BaseService
             ->orderBy('FieldID', 'asc')
             ->get();
 
-        return collect($response['value'] ?? []);
+        /** @var array<int, array<string, mixed>> $values */
+        $values = $response['value'] ?? [];
+
+        return collect($values);
     }
 
     /**
@@ -298,7 +301,10 @@ final class UdfService extends BaseService
 
         $response = $query->get();
 
-        return collect($response['value'] ?? []);
+        /** @var array<int, array<string, mixed>> $values */
+        $values = $response['value'] ?? [];
+
+        return collect($values);
     }
 
     /**

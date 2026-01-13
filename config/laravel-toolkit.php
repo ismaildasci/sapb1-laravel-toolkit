@@ -119,6 +119,32 @@ return [
         // Track soft deletes (detect deleted records in SAP)
         'track_deletes' => env('SAPB1_TOOLKIT_SYNC_TRACK_DELETES', true),
 
+        // Dispatch events (SyncStarted, SyncCompleted, SyncFailed)
+        'dispatch_events' => env('SAPB1_TOOLKIT_SYNC_DISPATCH_EVENTS', true),
+
+        /*
+        |--------------------------------------------------------------------------
+        | Queue Configuration (v2.8.0)
+        |--------------------------------------------------------------------------
+        |
+        | Configure queue settings for async sync operations.
+        | Use SyncEntityJob::dispatch('Items') to queue sync jobs.
+        |
+        */
+        'queue' => [
+            // Default queue connection for sync jobs
+            'connection' => env('SAPB1_TOOLKIT_SYNC_QUEUE_CONNECTION'),
+
+            // Default queue name for sync jobs
+            'queue' => env('SAPB1_TOOLKIT_SYNC_QUEUE', 'default'),
+
+            // Number of retry attempts
+            'tries' => env('SAPB1_TOOLKIT_SYNC_QUEUE_TRIES', 3),
+
+            // Backoff time between retries (seconds)
+            'backoff' => env('SAPB1_TOOLKIT_SYNC_QUEUE_BACKOFF', 60),
+        ],
+
         /*
         |--------------------------------------------------------------------------
         | Entity-Specific Sync Settings
