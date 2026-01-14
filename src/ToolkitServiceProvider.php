@@ -5,6 +5,12 @@ declare(strict_types=1);
 namespace SapB1\Toolkit;
 
 use SapB1\MultiTenant\TenantManager;
+use SapB1\Toolkit\Audit\AuditLogger;
+use SapB1\Toolkit\Audit\AuditService;
+use SapB1\Toolkit\Audit\Contracts\AuditDriverInterface;
+use SapB1\Toolkit\Audit\Drivers\DatabaseDriver;
+use SapB1\Toolkit\Audit\Drivers\LogDriver;
+use SapB1\Toolkit\Audit\Drivers\NullDriver;
 use SapB1\Toolkit\ChangeTracking\ChangeTrackingService;
 use SapB1\Toolkit\Commands\CacheCommand;
 use SapB1\Toolkit\Commands\GenerateCommand;
@@ -106,6 +112,9 @@ class ToolkitServiceProvider extends PackageServiceProvider
 
         // v2.9.0 - Multi-Tenant Support
         $this->registerMultiTenant();
+
+        // v3.0.0 - Audit Logging
+        $this->registerAudit();
     }
 
     private function registerMultiTenant(): void
@@ -142,6 +151,33 @@ class ToolkitServiceProvider extends PackageServiceProvider
             }
 
             return $service;
+        });
+    }
+
+    private function registerAudit(): void
+    {
+        // Register the audit driver based on configuration
+        $this->app->singleton(AuditDriverInterface::class, function ($app) {
+            $driver = config('laravel-toolkit.audit.driver', 'database');
+
+            return match ($driver) {
+                'log' => new LogDriver,
+                'null' => new NullDriver,
+                'database' => new DatabaseDriver,
+                default => is_string($driver) && class_exists($driver)
+                    ? $app->make($driver)
+                    : new DatabaseDriver,
+            };
+        });
+
+        // Register AuditLogger with driver
+        $this->app->singleton(AuditLogger::class, function ($app) {
+            return new AuditLogger($app->make(AuditDriverInterface::class));
+        });
+
+        // Register AuditService
+        $this->app->singleton(AuditService::class, function ($app) {
+            return new AuditService($app->make(AuditLogger::class));
         });
     }
 }

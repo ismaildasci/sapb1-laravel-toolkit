@@ -254,4 +254,124 @@ return [
             // ],
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Audit Logging (v3.0.0)
+    |--------------------------------------------------------------------------
+    |
+    | Configure audit logging for SAP B1 operations. This feature tracks all
+    | create, update, and delete operations on SAP entities for compliance
+    | and debugging purposes.
+    |
+    | Available drivers:
+    | - 'database' : Store to database (recommended for production)
+    | - 'log'      : Write to Laravel log (useful for debugging)
+    | - 'null'     : No-op driver (for testing)
+    | - Custom class implementing AuditDriverInterface
+    |
+    */
+    'audit' => [
+        // Enable/disable audit logging globally
+        'enabled' => env('SAPB1_TOOLKIT_AUDIT_ENABLED', true),
+
+        // Audit storage driver: 'database', 'log', 'null', or custom class
+        'driver' => env('SAPB1_TOOLKIT_AUDIT_DRIVER', 'database'),
+
+        // Database table name for audit logs
+        'table' => 'sap_audit_logs',
+
+        // Database connection (null = default)
+        'connection' => env('SAPB1_TOOLKIT_AUDIT_CONNECTION'),
+
+        // Log channel for 'log' driver
+        'log_channel' => env('SAPB1_TOOLKIT_AUDIT_LOG_CHANNEL', 'stack'),
+
+        // Log level for 'log' driver
+        'log_level' => 'info',
+
+        // Dispatch events (AuditRecorded, AuditFailed)
+        'dispatch_events' => env('SAPB1_TOOLKIT_AUDIT_DISPATCH_EVENTS', true),
+
+        /*
+        |--------------------------------------------------------------------------
+        | Global Field Exclusions
+        |--------------------------------------------------------------------------
+        |
+        | Fields that should NEVER be logged for security reasons.
+        | These are excluded from ALL entities.
+        |
+        */
+        'exclude' => [
+            'Password',
+            'EncryptedPassword',
+            'ApiKey',
+            'Token',
+            'Secret',
+        ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Retention Policy
+        |--------------------------------------------------------------------------
+        |
+        | Configure how long audit logs should be retained.
+        | Use 'php artisan model:prune' to clean old logs.
+        |
+        */
+        'retention' => [
+            'enabled' => env('SAPB1_TOOLKIT_AUDIT_RETENTION_ENABLED', true),
+            'days' => env('SAPB1_TOOLKIT_AUDIT_RETENTION_DAYS', 365),
+        ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Context Capture
+        |--------------------------------------------------------------------------
+        |
+        | Configure what context information to capture with each audit entry.
+        |
+        */
+        'context' => [
+            'user' => true,        // Capture user ID and type
+            'ip_address' => true,  // Capture IP address
+            'user_agent' => true,  // Capture user agent
+            'tenant' => true,      // Capture tenant ID (if multi-tenant)
+        ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Entity-Specific Audit Settings
+        |--------------------------------------------------------------------------
+        |
+        | Configure auditing per entity. If not specified, global settings apply.
+        |
+        | Example:
+        | 'entities' => [
+        |     'Orders' => [
+        |         'enabled' => true,
+        |         'events' => ['created', 'updated'],
+        |         'exclude' => ['InternalNotes'],
+        |     ],
+        |     'BusinessPartners' => [
+        |         'enabled' => true,
+        |         'exclude' => ['BankAccount', 'TaxId'],
+        |     ],
+        |     'Items' => [
+        |         'enabled' => false,  // Disable auditing for Items
+        |     ],
+        | ],
+        |
+        */
+        'entities' => [
+            // 'Orders' => [
+            //     'enabled' => true,
+            //     'events' => ['created', 'updated'],
+            // ],
+            // 'BusinessPartners' => [
+            //     'enabled' => true,
+            //     'exclude' => ['BankAccount'],
+            // ],
+        ],
+    ],
 ];
