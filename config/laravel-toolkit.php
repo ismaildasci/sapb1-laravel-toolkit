@@ -176,4 +176,82 @@ return [
             // ],
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Multi-Tenant Support (v2.9.0)
+    |--------------------------------------------------------------------------
+    |
+    | Configure multi-tenant SAP B1 connections. This allows a single Laravel
+    | application to connect to multiple SAP B1 databases (tenants).
+    |
+    | Resolver options:
+    | - 'config'  : Reads tenant from manually set context (ConfigTenantResolver)
+    | - 'header'  : Reads tenant from X-Tenant-ID header (HeaderTenantResolver)
+    | - 'user'    : Reads tenant from authenticated user (AuthUserTenantResolver)
+    | - 'custom'  : Your own resolver implementing TenantResolverInterface
+    |
+    */
+    'multi_tenant' => [
+        // Enable multi-tenant mode
+        'enabled' => env('SAPB1_TOOLKIT_MULTI_TENANT_ENABLED', false),
+
+        // Default resolver type: 'config', 'header', 'user', or class name
+        'resolver' => env('SAPB1_TOOLKIT_MULTI_TENANT_RESOLVER', 'config'),
+
+        // Header name for header-based resolution
+        'header' => env('SAPB1_TOOLKIT_MULTI_TENANT_HEADER', 'X-Tenant-ID'),
+
+        // Query parameter name for URL-based resolution
+        'query_param' => 'tenant_id',
+
+        // User attribute name for user-based resolution
+        'user_attribute' => 'tenant_id',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Subdomain-based Resolution
+        |--------------------------------------------------------------------------
+        |
+        | Enable subdomain-based tenant resolution (e.g., tenant1.example.com).
+        |
+        */
+        'subdomain' => [
+            'enabled' => env('SAPB1_TOOLKIT_MULTI_TENANT_SUBDOMAIN_ENABLED', false),
+            'base_domain' => env('SAPB1_TOOLKIT_MULTI_TENANT_BASE_DOMAIN', ''),
+        ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Tenant Configurations
+        |--------------------------------------------------------------------------
+        |
+        | Define SAP B1 connection configuration for each tenant.
+        |
+        | Example:
+        | 'tenants' => [
+        |     'tenant-1' => [
+        |         'sap_url' => 'https://sap1.example.com:50000/b1s/v1',
+        |         'sap_database' => 'SBO_TENANT1',
+        |         'sap_username' => 'manager',
+        |         'sap_password' => env('TENANT1_SAP_PASSWORD'),
+        |     ],
+        |     'tenant-2' => [
+        |         'sap_url' => 'https://sap2.example.com:50000/b1s/v1',
+        |         'sap_database' => 'SBO_TENANT2',
+        |         'sap_username' => 'manager',
+        |         'sap_password' => env('TENANT2_SAP_PASSWORD'),
+        |     ],
+        | ],
+        |
+        */
+        'tenants' => [
+            // 'tenant-1' => [
+            //     'sap_url' => 'https://sap1.example.com:50000/b1s/v1',
+            //     'sap_database' => 'SBO_TENANT1',
+            //     'sap_username' => 'manager',
+            //     'sap_password' => env('TENANT1_SAP_PASSWORD'),
+            // ],
+        ],
+    ],
 ];

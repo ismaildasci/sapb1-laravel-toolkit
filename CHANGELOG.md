@@ -2,6 +2,93 @@
 
 All notable changes to `laravel-sapb1-toolkit` will be documented in this file.
 
+## v2.9.0 - 2026-01-13
+
+### Added
+
+#### Multi-Tenant Support
+
+**Core Service**
+- `MultiTenantService` - High-level multi-tenant orchestrator
+  - `setTenant()` / `getTenantId()` / `clearTenant()` - Tenant context management
+  - `registerTenant()` / `getTenantConfig()` - Configuration management
+  - `runAs()` - Execute operations in specific tenant context
+  - `registerFromConfig()` - Load tenants from Laravel config
+
+**Tenant Resolvers (3 resolvers)**
+- `ConfigTenantResolver` - Config-based tenant resolution
+- `HeaderTenantResolver` - HTTP header-based resolution (X-Tenant-ID)
+- `AuthUserTenantResolver` - Authenticated user-based resolution
+
+**Model Support**
+- `HasTenant` trait for tenant-aware models
+  - `setTenantId()` / `getTenantId()` - Instance-level tenant tracking
+  - `belongsToTenant()` / `belongsToCurrentTenant()` - Ownership checks
+  - `forTenant()` - Static scope for tenant queries
+
+**HTTP Middleware**
+- `TenantMiddleware` - Request-level tenant resolution
+  - Route parameter support
+  - Header resolution (X-Tenant-ID)
+  - Query parameter support
+  - Subdomain resolution
+  - Authenticated user fallback
+
+**Exception Handling**
+- `MultiTenantException` for multi-tenant errors
+  - `tenantNotFound()`, `noTenantSet()`, `missingConfiguration()`
+  - `invalidResolver()`, `tenantMismatch()`
+
+**Config Updates**
+- `multi_tenant.enabled` - Enable/disable multi-tenant mode
+- `multi_tenant.resolver` - Default resolver type (config/header/user)
+- `multi_tenant.header` - Header name for header-based resolution
+- `multi_tenant.subdomain.*` - Subdomain resolution settings
+- `multi_tenant.tenants` - Tenant configurations
+
+### Usage
+
+```php
+use SapB1\Toolkit\MultiTenant\MultiTenantService;
+
+$multiTenant = app(MultiTenantService::class);
+
+// Register tenants
+$multiTenant->registerTenant('tenant-1', [
+    'sap_url' => 'https://sap1.example.com/b1s/v1',
+    'sap_database' => 'SBO_TENANT1',
+    'sap_username' => 'manager',
+    'sap_password' => env('TENANT1_SAP_PASSWORD'),
+]);
+
+// Set current tenant
+$multiTenant->setTenant('tenant-1');
+
+// Execute in tenant context
+$multiTenant->runAs('tenant-2', function () {
+    $orders = Order::all(); // Uses tenant-2's SAP connection
+});
+
+// Middleware usage (add to Kernel.php aliases)
+// 'tenant' => \SapB1\Toolkit\Http\Middleware\TenantMiddleware::class
+
+// Config-based tenants (config/laravel-toolkit.php)
+'multi_tenant' => [
+    'enabled' => true,
+    'resolver' => 'header',
+    'tenants' => [
+        'tenant-1' => [
+            'sap_url' => 'https://sap1.example.com/b1s/v1',
+            'sap_database' => 'SBO_TENANT1',
+            'sap_username' => 'manager',
+            'sap_password' => env('TENANT1_SAP_PASSWORD'),
+        ],
+    ],
+],
+```
+
+---
+
 ## v2.8.0 - 2026-01-13
 
 ### Added

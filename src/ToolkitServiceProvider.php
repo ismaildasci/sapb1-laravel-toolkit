@@ -6,6 +6,11 @@ namespace SapB1\Toolkit;
 
 use SapB1\Toolkit\ChangeTracking\ChangeTrackingService;
 use SapB1\Toolkit\Commands\CacheCommand;
+use SapB1\Toolkit\MultiTenant\MultiTenantService;
+use SapB1\Toolkit\MultiTenant\Resolvers\AuthUserTenantResolver;
+use SapB1\Toolkit\MultiTenant\Resolvers\ConfigTenantResolver;
+use SapB1\Toolkit\MultiTenant\Resolvers\HeaderTenantResolver;
+use SapB1\MultiTenant\TenantManager;
 use SapB1\Toolkit\Commands\GenerateCommand;
 use SapB1\Toolkit\Commands\InstallCommand;
 use SapB1\Toolkit\Commands\ReportCommand;
@@ -97,6 +102,46 @@ class ToolkitServiceProvider extends PackageServiceProvider
         $this->app->singleton(SyncRegistry::class);
         $this->app->singleton(LocalSyncService::class, function ($app) {
             return new LocalSyncService($app->make(SyncRegistry::class));
+        });
+
+        // v2.9.0 - Multi-Tenant Support
+        $this->registerMultiTenant();
+    }
+
+    private function registerMultiTenant(): void
+    {
+        // Register TenantManager as singleton
+        $this->app->singleton(TenantManager::class);
+
+        // Register resolvers
+        $this->app->singleton(ConfigTenantResolver::class);
+        $this->app->singleton(HeaderTenantResolver::class);
+        $this->app->singleton(AuthUserTenantResolver::class);
+
+        // Register MultiTenantService with resolver configuration
+        $this->app->singleton(MultiTenantService::class, function ($app) {
+            $service = new MultiTenantService($app->make(TenantManager::class));
+
+            // Configure resolver based on config
+            if (config('laravel-toolkit.multi_tenant.enabled', false)) {
+                $resolverType = config('laravel-toolkit.multi_tenant.resolver', 'config');
+
+                $resolver = match ($resolverType) {
+                    'header' => $app->make(HeaderTenantResolver::class),
+                    'user' => $app->make(AuthUserTenantResolver::class),
+                    'config' => $app->make(ConfigTenantResolver::class),
+                    default => is_string($resolverType) && class_exists($resolverType)
+                        ? $app->make($resolverType)
+                        : $app->make(ConfigTenantResolver::class),
+                };
+
+                $service->setResolver($resolver);
+
+                // Register tenants from config
+                $service->registerFromConfig();
+            }
+
+            return $service;
         });
     }
 }
