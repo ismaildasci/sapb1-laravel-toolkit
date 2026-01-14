@@ -105,7 +105,7 @@ final class MultiTenantService
     /**
      * Register a tenant with configuration.
      *
-     * @param array<string, mixed> $config SAP B1 connection config
+     * @param  array<string, mixed>  $config  SAP B1 connection config
      */
     public function registerTenant(string $tenantId, array $config): self
     {
@@ -136,7 +136,7 @@ final class MultiTenantService
      *
      * @template T
      *
-     * @param Closure(): T $callback
+     * @param  Closure(): T  $callback
      * @return T
      */
     public function runAs(string $tenantId, Closure $callback): mixed

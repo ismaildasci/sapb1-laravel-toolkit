@@ -6,7 +6,7 @@ use SapB1\MultiTenant\TenantManager;
 use SapB1\Toolkit\MultiTenant\MultiTenantService;
 
 beforeEach(function () {
-    $this->manager = new TenantManager();
+    $this->manager = new TenantManager;
     $this->service = new MultiTenantService($this->manager);
 });
 

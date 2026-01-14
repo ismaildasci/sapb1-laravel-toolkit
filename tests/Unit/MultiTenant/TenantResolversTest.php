@@ -8,7 +8,7 @@ use SapB1\Toolkit\MultiTenant\Resolvers\HeaderTenantResolver;
 
 describe('ConfigTenantResolver', function () {
     beforeEach(function () {
-        $this->resolver = new ConfigTenantResolver();
+        $this->resolver = new ConfigTenantResolver;
     });
 
     it('requires explicit tenant setting', function () {
@@ -117,7 +117,7 @@ describe('HeaderTenantResolver', function () {
     });
 
     it('allows setting request instance', function () {
-        $resolver = new HeaderTenantResolver();
+        $resolver = new HeaderTenantResolver;
 
         $request = Request::create('/api/orders', 'GET');
         $request->headers->set('X-Tenant-ID', 'late-binding');

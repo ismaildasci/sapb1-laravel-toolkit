@@ -4,13 +4,9 @@ declare(strict_types=1);
 
 namespace SapB1\Toolkit;
 
+use SapB1\MultiTenant\TenantManager;
 use SapB1\Toolkit\ChangeTracking\ChangeTrackingService;
 use SapB1\Toolkit\Commands\CacheCommand;
-use SapB1\Toolkit\MultiTenant\MultiTenantService;
-use SapB1\Toolkit\MultiTenant\Resolvers\AuthUserTenantResolver;
-use SapB1\Toolkit\MultiTenant\Resolvers\ConfigTenantResolver;
-use SapB1\Toolkit\MultiTenant\Resolvers\HeaderTenantResolver;
-use SapB1\MultiTenant\TenantManager;
 use SapB1\Toolkit\Commands\GenerateCommand;
 use SapB1\Toolkit\Commands\InstallCommand;
 use SapB1\Toolkit\Commands\ReportCommand;
@@ -19,6 +15,10 @@ use SapB1\Toolkit\Commands\SyncSetupCommand;
 use SapB1\Toolkit\Commands\SyncStatusCommand;
 use SapB1\Toolkit\Commands\TestConnectionCommand;
 use SapB1\Toolkit\Commands\WatchCommand;
+use SapB1\Toolkit\MultiTenant\MultiTenantService;
+use SapB1\Toolkit\MultiTenant\Resolvers\AuthUserTenantResolver;
+use SapB1\Toolkit\MultiTenant\Resolvers\ConfigTenantResolver;
+use SapB1\Toolkit\MultiTenant\Resolvers\HeaderTenantResolver;
 use SapB1\Toolkit\Services\ApprovalService;
 use SapB1\Toolkit\Services\AttachmentService;
 use SapB1\Toolkit\Services\BatchService;

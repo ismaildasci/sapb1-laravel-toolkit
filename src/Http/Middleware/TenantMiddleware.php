@@ -47,7 +47,7 @@ final class TenantMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param Closure(Request): Response $next
+     * @param  Closure(Request): Response  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -124,7 +124,7 @@ final class TenantMiddleware
             return null;
         }
 
-        $subdomain = str_replace('.' . $baseDomain, '', $host);
+        $subdomain = str_replace('.'.$baseDomain, '', $host);
 
         if ($subdomain === '' || $subdomain === $host) {
             return null;

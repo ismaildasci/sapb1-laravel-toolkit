@@ -95,12 +95,10 @@ trait HasTenant
      * Scope query to a specific tenant.
      *
      * This changes the SAP B1 connection context for the query.
-     *
-     * @return static
      */
     public static function forTenant(string $tenantId): static
     {
-        $model = new static();
+        $model = new static;
         $model->setTenantId($tenantId);
 
         // Set the connection context
