@@ -12,6 +12,8 @@ use SapB1\Toolkit\Audit\Drivers\DatabaseDriver;
 use SapB1\Toolkit\Audit\Drivers\LogDriver;
 use SapB1\Toolkit\Audit\Drivers\NullDriver;
 use SapB1\Toolkit\ChangeTracking\ChangeTrackingService;
+use SapB1\Toolkit\Commands\AuditExportCommand;
+use SapB1\Toolkit\Commands\AuditPruneCommand;
 use SapB1\Toolkit\Commands\CacheCommand;
 use SapB1\Toolkit\Commands\GenerateCommand;
 use SapB1\Toolkit\Commands\InstallCommand;
@@ -62,6 +64,8 @@ class ToolkitServiceProvider extends PackageServiceProvider
                 CacheCommand::class,
                 ReportCommand::class,
                 WatchCommand::class,
+                AuditPruneCommand::class,
+                AuditExportCommand::class,
             ]);
     }
 

@@ -2,6 +2,137 @@
 
 All notable changes to `laravel-sapb1-toolkit` will be documented in this file.
 
+## v3.1.0 - 2026-01-15
+
+### Added
+
+#### Audit Maintenance Commands
+
+**Commands**
+- `sapb1:audit-prune` - CLI command for pruning old audit log entries
+  - `--days` option for custom retention period
+  - `--dry-run` option to preview deletions
+  - `--force` option to skip confirmation
+- `sapb1:audit-export` - CLI command for exporting audit logs
+  - `--entity` option to filter by entity type
+  - `--since` option to filter by date
+  - `--limit` option to limit export size
+  - `--format` option (csv or json)
+  - `--output` option for custom output path
+
+**Jobs**
+- `AuditPruneJob` - Queueable job for scheduled audit log pruning
+  - Supports custom retention days
+  - Auto-retry with 3 attempts
+  - Schedulable in Laravel's console kernel
+
+**Driver Enhancement**
+- `DatabaseDriver::countOlderThan()` - Count entries older than given days for dry-run support
+
+### Usage
+
+```php
+// CLI Prune
+// php artisan sapb1:audit-prune --days=90 --force
+// php artisan sapb1:audit-prune --dry-run
+
+// CLI Export
+// php artisan sapb1:audit-export --entity=Orders --format=csv
+// php artisan sapb1:audit-export --since=2026-01-01 --format=json
+
+// Scheduled Pruning (Console Kernel)
+$schedule->job(new AuditPruneJob)->daily();
+$schedule->job(new AuditPruneJob(days: 30))->weekly();
+
+// Dispatch manually
+AuditPruneJob::dispatch();
+AuditPruneJob::dispatch(days: 90);
+```
+
+---
+
+## v3.0.0 - 2026-01-14
+
+### Added
+
+#### Audit Logging System
+
+**Core Components**
+- `AuditService` - High-level audit service with fluent query interface
+  - `log()` / `logCreated()` / `logUpdated()` / `logDeleted()` - Logging methods
+  - `for()` / `forEntity()` / `byUser()` - Query builder methods
+  - `since()` / `limit()` / `get()` / `first()` - Query execution
+  - `stats()` - Entity statistics (created/updated/deleted counts)
+  - `prune()` - Old entry cleanup
+- `AuditLogger` - Low-level logger with driver abstraction
+- `AuditEntry` - Value object for audit entries
+- `AuditContext` - Request context capture (user, IP, user agent)
+
+**Drivers (3 drivers)**
+- `DatabaseDriver` - Eloquent-based storage with `AuditLog` model
+- `LogDriver` - Laravel Log facade integration
+- `NullDriver` - No-op driver for testing/disabled mode
+
+**Events**
+- `AuditRecorded` - Dispatched when an audit entry is recorded
+- `AuditFailed` - Dispatched when audit recording fails
+
+**Model Traits**
+- `HasAudit` trait for automatic model auditing
+  - `auditChanges()` - Manual change logging
+  - `getAuditLogs()` - Retrieve model's audit history
+  - Automatic change detection on save
+- `HasUdfMapping` trait for UDF field aliasing
+  - Property-style access to UDFs (`$order->deliveryDate`)
+  - Type casting support (date, integer, boolean, json, array)
+  - Validation support
+
+**Exceptions**
+- `AuditException` - Base exception for audit errors
+
+**Config Updates**
+- `audit.enabled` - Enable/disable audit logging
+- `audit.driver` - Default driver (database/log/null)
+- `audit.async` - Queue-based logging
+- `audit.context.*` - Context capture settings
+- `audit.retention.days` - Log retention period
+- `audit.entities.*` - Per-entity configuration
+
+### Usage
+
+```php
+use SapB1\Toolkit\Audit\AuditService;
+
+$audit = app(AuditService::class);
+
+// Log operations
+$audit->logCreated('Orders', 123, $data);
+$audit->logUpdated('Items', 'A001', $oldData, $newData);
+$audit->logDeleted('Partners', 'C001', $data);
+
+// Query logs
+$logs = $audit->for('Orders', 123)->get();
+$logs = $audit->forEntity('Orders')->since('2026-01-01')->limit(100)->get();
+$stats = $audit->stats('Orders');
+
+// With trait
+class Order extends SapB1Model
+{
+    use HasAudit, HasUdfMapping;
+
+    protected array $udfMappings = [
+        'deliveryDate' => ['field' => 'U_DeliveryDate', 'type' => 'date'],
+        'customerId' => ['field' => 'U_CustomerID', 'type' => 'integer'],
+    ];
+}
+
+$order = Order::find(123);
+$order->deliveryDate; // Carbon instance from U_DeliveryDate
+$order->getAuditLogs(); // All audit entries for this order
+```
+
+---
+
 ## v2.9.0 - 2026-01-13
 
 ### Added

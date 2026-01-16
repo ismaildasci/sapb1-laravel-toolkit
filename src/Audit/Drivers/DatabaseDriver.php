@@ -109,6 +109,16 @@ final class DatabaseDriver implements AuditDriverInterface
     }
 
     /**
+     * Count entries older than given days.
+     */
+    public function countOlderThan(int $days): int
+    {
+        $cutoff = now()->subDays($days)->toDateTimeString();
+
+        return $this->query()->where('created_at', '<', $cutoff)->count();
+    }
+
+    /**
      * Get the driver name.
      */
     public function getName(): string
